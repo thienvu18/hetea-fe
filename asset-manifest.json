@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/hetea-fe/static/css/main.b100e6da.chunk.css",
+    "main.js": "/hetea-fe/static/js/main.fe34fa3e.chunk.js",
+    "main.js.map": "/hetea-fe/static/js/main.fe34fa3e.chunk.js.map",
+    "runtime-main.js": "/hetea-fe/static/js/runtime-main.f2f68442.js",
+    "runtime-main.js.map": "/hetea-fe/static/js/runtime-main.f2f68442.js.map",
+    "static/js/2.d1a41941.chunk.js": "/hetea-fe/static/js/2.d1a41941.chunk.js",
+    "static/js/2.d1a41941.chunk.js.map": "/hetea-fe/static/js/2.d1a41941.chunk.js.map",
+    "index.html": "/hetea-fe/index.html",
+    "precache-manifest.c15516a5711df74d5cb0854956edbc98.js": "/hetea-fe/precache-manifest.c15516a5711df74d5cb0854956edbc98.js",
+    "service-worker.js": "/hetea-fe/service-worker.js",
+    "static/css/main.b100e6da.chunk.css.map": "/hetea-fe/static/css/main.b100e6da.chunk.css.map",
+    "static/media/logo.svg": "/hetea-fe/static/media/logo.25bf045c.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f2f68442.js",
+    "static/js/2.d1a41941.chunk.js",
+    "static/css/main.b100e6da.chunk.css",
+    "static/js/main.fe34fa3e.chunk.js"
+  ]
+}
