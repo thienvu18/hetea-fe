@@ -5,10 +5,11 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./components/header";
 import Footer from "./components/Footer";
 
-import Dashboard from "./pages/Dashboard";
+import TutorHome from "./pages/TutorHome";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PageNotFound from "./pages/NotFound";
+import StudentHome from "./pages/StudentHome";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       <Header />
       <Router>
         <Switch>
-          <Route exact path="/" component={Dashboard} />
+            <Route exact path="/student-home" component={StudentHome} />
+            <Route exact path="/tutor-home" component={TutorHome} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route>

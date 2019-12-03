@@ -10,6 +10,13 @@ export default class Register extends React.Component {
             <div className="row">
               <div className="col-md-12">
                 <h2>Register</h2>
+                  {/*<!-- Breadcrumbs -->*/}
+                  <nav id="breadcrumbs" class="dark">
+                      <ul>
+                          <li><a href="/">Home</a></li>
+                          <li>Register</li>
+                      </ul>
+                  </nav>
               </div>
             </div>
           </div>

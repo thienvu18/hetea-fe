@@ -226,18 +226,6 @@ export default class Footer extends React.Component {
             </div>
           </div>
           {/* <!-- Footer Middle Section / End --> */}
-
-          {/* <!-- Footer Copyrights --> */}
-          <div class="footer-bottom-section">
-            <div class="container">
-              <div class="row">
-                <div class="col-xl-12">
-                  © 2019 <strong>Hireo</strong>. All Rights Reserved.
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* <!-- Footer Copyrights / End --> */}
         </div>
       </div>
     );
