@@ -1,16 +1,17 @@
 import axios from 'axios';
 import userConstants  from '../constants/UserConstants';
 
-function doRegister(username, email,password,gender,birthday) {
+function doRegister(email,password,type) {
     const res = axios({
         method: 'POST',
-        url:'https://caroapi-1612799.herokuapp.com/users/register',
+        url:'https://hetea.herokuapp.com/users',
+        headers:{
+            Authorization: "Bearer x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL"
+        },
         data:{
-            username,
-            email,
-            gender,
-            birthday,
-            password,
+            email: email,
+            password: password,
+            type: type
         }
     })
         .catch(err=>{
@@ -24,10 +25,10 @@ export const registerAction=(res)=>{
         res
     }
 };
-export const registerRequest=(username, email,gender,birthday, password)=>{
+export const registerRequest=(email,password,type)=>{
     return dispatch=>{
-        return doRegister(username, email,gender,birthday, password).then(res=>{
-            // console.log(res.request.response);
+        return doRegister(email,password,type).then(res=>{
+            console.log(res);
             dispatch(registerAction(res))
         })
     }
@@ -73,26 +74,3 @@ export const logout = () => {
     };
 };
 
-function getUser(user) {
-    const res = axios({
-        method: 'GET',
-        url: 'https://caroapi-1612799.herokuapp.com/',
-        headers: { Authorization: `Bearer ${user}` },
-    }).catch(err => {
-        return err;
-    });
-    return res;
-}
-export const getUserAction = (res) => {
-    return {
-        type: userConstants.GET_CURRENT_USER,
-        res,
-    };
-};
-export const getUserRequest = token => {
-    return dispatch => {
-        return getUser(token).then(res => {
-            dispatch(getUserAction(res));
-        });
-    };
-};

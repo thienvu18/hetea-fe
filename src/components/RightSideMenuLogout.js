@@ -1,15 +1,15 @@
 import React from "react";
 
-function RightSideMenuLogout (props) {
+function RightSideMenuLogout(props) {
   const {
+    type,
     email,
     password,
     login,
-    accountType,
     newEmail,
     newPassword,
     passwordConfirm,
-    register
+    register,
   } = props;
 
   return (
@@ -41,76 +41,81 @@ function RightSideMenuLogout (props) {
 
           <div className="popup-tabs-container">
             {/*// <!-- Login -->*/}
-              <div className="popup-tab-content" id="login">
-                  {/* <!--  Welcome text --> */}
-                  <div className="welcome-text">
-                      <h3>We are glad to see you again!</h3>
-                      <span>
-                Do not have an account? <a href="/#" class="register-tab">Sign Up!</a>
-              </span>
-                  </div>
-
-                  {/* <!--  Form --> */}
-                  <form method="post" id="login-form">
-                      <div className="input-with-icon-left">
-                          <i className="icon-material-baseline-mail-outline" />
-                          <input
-                              type="text"
-                              className="input-text with-border"
-                              name="emailaddress"
-                              id="emailaddress"
-                              placeholder="Email Address"
-                              required
-                              onChange={event => {
-                                  email(event);
-                              }}
-                          />
-                      </div>
-
-                      <div className="input-with-icon-left">
-                          <i className="icon-material-outline-lock" />
-                          <input
-                              type="password"
-                              className="input-text with-border"
-                              name="password"
-                              id="password"
-                              placeholder="Password"
-                              required
-                              onChange={event => {
-                                  password(event);
-                              }}
-                          />
-                      </div>
-                      <a href="/#" className="forgot-password">
-                          Forgot Password?
-                      </a>
-                  </form>
-
-                  {/*<!-- Button -->*/}
-                  <button
-                      className="button full-width button-sliding-icon ripple-effect margin-top-10"
-                      type="button"
-                      form="login-form"
-                      onClick={() => login()}
-                  >
-                      Log In
-                      <i className="icon-material-outline-arrow-right-alt" />
-                  </button>
-
-                  {/*<!-- Social Login -->*/}
-                  <div className="social-login-separator">
-                      <span>or</span>
-                  </div>
-                  <div className="social-login-buttons">
-                      <button className="facebook-login ripple-effect">
-                          <i className="icon-brand-facebook-f" /> Log In via Facebook
-                      </button>
-                      <button className="google-login ripple-effect">
-                          <i className="icon-brand-google-plus-g" /> Log In via Google+
-                      </button>
-                  </div>
-
+            <div className="popup-tab-content" id="login">
+              {/* <!--  Welcome text --> */}
+              <div className="welcome-text">
+                <h3>We are glad to see you again!</h3>
+                <span>
+                  Do not have an account?{" "}
+                  <a href="/#" class="register-tab">
+                    Sign Up!
+                  </a>
+                </span>
               </div>
+
+              {/* <!--  Form --> */}
+              <form method="post" id="login-form">
+                <div className="input-with-icon-left">
+                  <i className="icon-material-baseline-mail-outline" />
+                  <input
+                    type="text"
+                    className="input-text with-border"
+                    name="emailaddress"
+                    id="emailaddress"
+                    placeholder="Email Address"
+                    required
+                    onChange={event => {
+                      email(event);
+                    }}
+                  />
+                </div>
+
+                <div className="input-with-icon-left">
+                  <i className="icon-material-outline-lock" />
+                  <input
+                    type="password"
+                    className="input-text with-border"
+                    name="password"
+                    id="password"
+                    placeholder="Password"
+                    required
+                    onChange={event => {
+                      password(event);
+                    }}
+                  />
+                </div>
+                <a href="/#" className="forgot-password">
+                  Forgot Password?
+                </a>
+              </form>
+
+              {/*<!-- Button -->*/}
+              <button
+                className="button full-width button-sliding-icon ripple-effect margin-top-10"
+                type="button"
+                form="login-form"
+                onClick={() => login()}
+              >
+                Log In
+                <i className="icon-material-outline-arrow-right-alt" />
+              </button>
+
+              {/*<!-- Social Login -->*/}
+              <div className="social-login-separator">
+                <span>or</span>
+              </div>
+              <div className="social-login-buttons">
+                <button className="facebook-login ripple-effect">
+                  <i className="icon-brand-facebook-f" /> Log In via Facebook
+                </button>
+                <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=429405468090-n1l6hmc8uq26j4h91qgr7m459vnv3qqh.apps.googleusercontent.com;redirect_uri=https://restful1612800.herokuapp.com/api/auth/login-with-google&amp;scope=profile email openid&amp;response_type=code&amp;access_type=offline&amp;include_granted_scopes=true">
+                  <button className="google-login ripple-effect">
+                    <i className="icon-brand-google-plus-g" /> Log In via
+                    Google+
+                  </button>
+                </a>
+              </div>
+            </div>
             {/*// <!-- Register -->*/}
             <div className="popup-tab-content" id="register">
               {/* <!--  Welcome text --> */}
@@ -129,6 +134,7 @@ function RightSideMenuLogout (props) {
                     id="freelancer-radio"
                     className="account-type-radio"
                     checked
+                    onClick={() => type("tutor")}
                   />
                   <label
                     htmlFor="freelancer-radio"
@@ -144,6 +150,7 @@ function RightSideMenuLogout (props) {
                     name="account-type-radio"
                     id="employer-radio"
                     className="account-type-radio"
+                    onClick={() => type("student")}
                   />
                   <label
                     htmlFor="employer-radio"
@@ -167,7 +174,7 @@ function RightSideMenuLogout (props) {
                     placeholder="Email Address"
                     required
                     onChange={event => {
-                        newEmail(event);
+                      newEmail(event);
                     }}
                   />
                 </div>
@@ -186,7 +193,7 @@ function RightSideMenuLogout (props) {
                     placeholder="Password"
                     required
                     onChange={event => {
-                        newPassword(event);
+                      newPassword(event);
                     }}
                   />
                 </div>
@@ -201,7 +208,7 @@ function RightSideMenuLogout (props) {
                     placeholder="Repeat Password"
                     required
                     onChange={event => {
-                        passwordConfirm(event);
+                      passwordConfirm(event);
                     }}
                   />
                 </div>
@@ -212,25 +219,11 @@ function RightSideMenuLogout (props) {
                 className="button full-width button-sliding-icon ripple-effect margin-top-10"
                 type="submit"
                 form="login-form"
-                onClick={()=>register()}
+                onClick={() => register()}
               >
                 Register
                 <i className="icon-material-outline-arrow-right-alt" />
               </button>
-
-              {/*<!-- Social Login -->*/}
-              <div className="social-login-separator">
-                <span>or</span>
-              </div>
-              <div className="social-login-buttons">
-                <button className="facebook-login ripple-effect">
-                  <i className="icon-brand-facebook-f" /> Register via Facebook
-                </button>
-                <button className="google-login ripple-effect">
-                  <i className="icon-brand-google-plus-g" /> Register via
-                  Google+
-                </button>
-              </div>
             </div>
           </div>
         </div>

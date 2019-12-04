@@ -14,14 +14,34 @@ class Header extends React.Component {
     super(props);
     this.email = "";
     this.password = "";
-    this.accountType = "";
+    this.accountType = "tutor";
     this.newEmail = "";
     this.newPassword = "";
     this.passwordConfirm = "";
   }
 
+
+
+  register=()=>{
+      const state=this.props;
+      if(this.newPassword===this.passwordConfirm)
+        return  state.doRegister(this.newEmail, this.newPassword, this.accountType);
+
+      return alert("Password not match");
+  };
+
+    componentDidMount() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('name')) {
+            console.log(urlParams);
+            this.setCookie('token', urlParams.get('token'), 7);
+            const st = this.props;
+            st.history.push('/options');
+        }
+    }
   render() {
     const state = this.props;
+
     return (
       <div>
         <header
@@ -47,6 +67,7 @@ class Header extends React.Component {
                 <RightSideMenuLogin />
               ) : (
                 <RightSideMenuLogout
+                    type={type => this.accountType = type}
                   email={event => {
                     this.email = event.target.value;
                   }}
@@ -54,20 +75,17 @@ class Header extends React.Component {
                     this.password = event.target.value;
                   }}
                   login={() => state.doLogin(this.email, this.password)}
-                  accountType={event => {
-                    this.accountType = event.target.value;
-                  }}
                   newEmail={event => {
                     this.newEmail = event.target.value;
                   }}
                   newPassword={event => {
                     this.newPassword = event.target.value;
                   }}
-                  passwordComfirm={event => {
-                    this.passwordComfirm = event.target.value;
+                  passwordConfirm={event => {
+                    this.passwordConfirm = event.target.value;
                   }}
                   register={() =>
-                    state.doRegister(this.newEmail, this.newPassword)
+                    this.register()
                   }
                 />
               )}
@@ -93,8 +111,8 @@ const mapDispatchToProps = dispatch => {
     doLogin: (email, pwd) => {
       dispatch(loginRequest(email, pwd));
     },
-    doRegister: (newEmail, newPwd) => {
-      dispatch(registerRequest(newEmail, newPwd));
+    doRegister: (newEmail, newPwd, type) => {
+      dispatch(registerRequest(newEmail, newPwd, type));
     }
   };
 };
