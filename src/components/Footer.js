@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../images/logo4.png'
 // import '../App.css';
 
 export default class Footer extends React.Component {
@@ -17,7 +18,7 @@ export default class Footer extends React.Component {
                     <div class="footer-rows-left">
                       <div class="footer-row">
                         <div class="footer-row-inner footer-logo">
-                          <img src="images/logo2.png" alt="" />
+                          <img src={logo} alt="logo" />
                         </div>
                       </div>
                     </div>
@@ -35,7 +36,7 @@ export default class Footer extends React.Component {
                                 data-tippy-placement="bottom"
                                 data-tippy-theme="light"
                               >
-                                <i class="icon-brand-facebook-f"></i>
+                                <i class="icon-brand-facebook-f"/>
                               </a>
                             </li>
                             <li>
@@ -45,7 +46,7 @@ export default class Footer extends React.Component {
                                 data-tippy-placement="bottom"
                                 data-tippy-theme="light"
                               >
-                                <i class="icon-brand-twitter"></i>
+                                <i class="icon-brand-twitter"/>
                               </a>
                             </li>
                             <li>
@@ -55,7 +56,7 @@ export default class Footer extends React.Component {
                                 data-tippy-placement="bottom"
                                 data-tippy-theme="light"
                               >
-                                <i class="icon-brand-google-plus-g"></i>
+                                <i class="icon-brand-google-plus-g"/>
                               </a>
                             </li>
                             <li>
@@ -65,11 +66,11 @@ export default class Footer extends React.Component {
                                 data-tippy-placement="bottom"
                                 data-tippy-theme="light"
                               >
-                                <i class="icon-brand-linkedin-in"></i>
+                                <i class="icon-brand-linkedin-in"/>
                               </a>
                             </li>
                           </ul>
-                          <div class="clearfix"></div>
+                          <div class="clearfix"/>
                         </div>
                       </div>
 
@@ -205,7 +206,7 @@ export default class Footer extends React.Component {
                 {/* <!-- Newsletter --> */}
                 <div class="col-xl-4 col-lg-4 col-md-12">
                   <h3>
-                    <i class="icon-feather-mail"></i> Sign Up For a Newsletter
+                    <i class="icon-feather-mail"/> Sign Up For a Newsletter
                   </h3>
                   <p>
                     Weekly breaking news, analysis and cutting edge advices on
@@ -218,7 +219,7 @@ export default class Footer extends React.Component {
                       placeholder="Enter your email address"
                     />
                     <button type="submit">
-                      <i class="icon-feather-arrow-right"></i>
+                      <i class="icon-feather-arrow-right"/>
                     </button>
                   </form>
                 </div>
