@@ -23,7 +23,7 @@ const RegisterForm = () => {
             checked
           />
           <label htmlFor="freelancer-radio" className="ripple-effect-dark">
-            <i className="icon-material-outline-account-circle" /> Freelancer
+            <i className="icon-material-outline-account-circle" /> Tutor
           </label>
         </div>
 
@@ -35,7 +35,7 @@ const RegisterForm = () => {
             className="account-type-radio"
           />
           <label htmlFor="employer-radio" className="ripple-effect-dark">
-            <i className="icon-material-outline-business-center" /> Employer
+            <i className="icon-material-outline-business-center" /> Student
           </label>
         </div>
       </div>
