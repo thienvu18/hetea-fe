@@ -4601,7 +4601,7 @@ span.blog-item-tag {
   flex-direction: column;
   justify-content: center;
   margin: 0 30px 30px 0;
-  width: calc(100% * (1 / 2) - 30px);
+  width: calc(100% * (1 / 3) - 30px);
   border-radius: 4px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
   background-color: #fff;
@@ -9767,12 +9767,12 @@ img.mfp-img {
   overflow: hidden;
 }
 .account-type input.account-type-radio ~ label:hover {
-  color: #289c41;
+  color: #0B2643;
   background-color: #e4f6e9;
 }
 .account-type input.account-type-radio:checked ~ label {
   color: #fff;
-  background-color: #47bb67;
+  background-color: #0B2643;
 }
 .account-type input.account-type-radio:empty ~ label:after,
 .account-type input.account-type-radio:empty ~ label:before {

@@ -42,10 +42,13 @@ function doFBRegister(token) {
 	});
 	return res;
 }
+
 export const registerAction = res => {
 	return {
 		type: userConstants.REGISTER,
-		res,
+		payload: {
+			res,
+		},
 	};
 };
 
@@ -53,6 +56,8 @@ export const registerRequest = (email, password, type) => {
 	return dispatch => {
 		return doRegister(email, password, type).then(res => {
 			console.log(res);
+			console.log(res.request.status);
+
 			dispatch(registerAction(res));
 		});
 	};
@@ -104,6 +109,11 @@ export const loginRequest = (email, password) => {
 			console.log(res);
 			dispatch(loginAction(res));
 		});
+	};
+};
+export const clear = () => {
+	return {
+		type: userConstants.REFRESH,
 	};
 };
 
