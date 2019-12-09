@@ -5,10 +5,20 @@ import TutorHome from "./TutorHome";
 import {Link} from "react-router-dom";
 import banner from "../images/home-background.jpg";
 import TutorCard from "../components/TutorCard";
+import data from "../data";
 
 class Home extends React.Component {
+    constructor(props){
+        super(props);
+        this.filters={
+            Location: 'Any place',
+            HourRate: 'Any Hourly Rate',
+            Category: 'Any Categories',
+        }
+    }
     render() {
         const state = this.props;
+        console.log(state);
         if (state.isLogin) {
             if (state.accountType === 'tutor')
                 return <TutorHome/>;
@@ -20,7 +30,7 @@ class Home extends React.Component {
                 {/*//                 <!-- Intro Banner*/}
                 {/*// ================================================== -->*/}
                 {/*//                 <!-- add class "disable-gradient" to enable consistent background overlay -->*/}
-                <div class="intro-banner" data-background-image={banner}>
+                <div class="intro-banner " data-background-image={banner}>
                     <div class="container">
                         {/*// <!-- Intro Headline -->*/}
                         <div class="row">
@@ -38,75 +48,6 @@ class Home extends React.Component {
                     </span>
                                     </h3>
                                 </div>
-                            </div>
-                        </div>
-
-                        {/*// <!-- Search Bar -->*/}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="intro-banner-search-form margin-top-95">
-                                    {/*// <!-- Search Field -->*/}
-                                    <div class="intro-search-field with-autocomplete">
-                                        <label
-                                            form="autocomplete-input"
-                                            class="field-title ripple-effect"
-                                        >
-                                            Where?
-                                        </label>
-                                        <div class="input-with-icon">
-                                            <input
-                                                id="autocomplete-input"
-                                                type="text"
-                                                placeholder="Online Job"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {/*// <!-- Search Field -->*/}
-                                    <div class="intro-search-field">
-                                        <label
-                                            form="intro-keywords"
-                                            class="field-title ripple-effect"
-                                        >
-                                            What job you want?
-                                        </label>
-                                        <input
-                                            id="intro-keywords"
-                                            type="text"
-                                            placeholder="Job Title or Keywords"
-                                        />
-                                    </div>
-
-                                    {/*// <!-- Button -->*/}
-                                    <div class="intro-search-button">
-                                        <button
-                                            class="button ripple-effect"
-                                            onClick="window.location.href='jobs-list-layout-full-page-map.html'"
-                                        >
-                                            Search
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/*// <!-- Stats -->*/}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <ul class="intro-stats margin-top-45 hide-under-992px">
-                                    <li>
-                                        <strong class="counter">1,586</strong>
-                                        <span>Jobs Posted</span>
-                                    </li>
-                                    <li>
-                                        <strong class="counter">3,543</strong>
-                                        <span>Tasks Posted</span>
-                                    </li>
-                                    <li>
-                                        <strong class="counter">1,232</strong>
-                                        <span>Freelancers</span>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -268,49 +209,49 @@ class Home extends React.Component {
                                             <div className="col-lg-3">
                                                 <select
                                                     className="selectpicker default"
-                                                    multiple
                                                     data-selected-text-format="count"
                                                     data-size="7"
+                                                    onChange={e=>this.filters.Location=e.target.value}
+                                                    value={this.filters.Location}
                                                 >
-                                                    <option selected>Any place</option>
-                                                    <option>District 1</option>
-                                                    <option>District 2</option>
-                                                    <option>District 3</option>
-                                                    <option>District 4</option>
+                                                    <option value="Any Place">Any Place</option>
+                                                    <option value="District 1">District 1</option>
+                                                    <option value="District 2">District 2</option>
+                                                    <option value="District 3">District 3</option>
+                                                    <option value="District 4">District 4</option>
                                                 </select>
                                             </div>
                                             <div className="col-lg-3">
                                                 <select
                                                     className="selectpicker default"
-                                                    multiple
                                                     data-selected-text-format="count"
                                                     data-size="7"
+                                                    onChange={e=>this.filters.HourRate=e.target.value}
+                                                    value={this.filters.HourRate}
+
                                                 >
-                                                    <option selected>Any Hourly Rate</option>
-                                                    <option>$10/hr and below</option>
-                                                    <option>$10/hr - $30/hr</option>
-                                                    <option>$30/hr - $60/hr</option>
-                                                    <option>$60/hr and above</option>
+                                                    <option value="Any Hourly Rate">Any Hourly Rate</option>
+                                                    <option value="$10/hr and below">$10/hr and below</option>
+                                                    <option value="$10/hr - $30/hr">$10/hr - $30/hr</option>
+                                                    <option value="$30/hr - $60/hr">$30/hr - $60/hr</option>
+                                                    <option value="$60/hr and above">$60/hr and above</option>
                                                 </select>
                                             </div>
                                             <div className="col-lg-3">
                                                 <select
                                                     className="selectpicker default"
-                                                    multiple
                                                     data-selected-text-format="count"
                                                     data-size="7"
+                                                    onChange={e=>this.filters.Category=e.target.value}
+                                                    value={this.filters.Category}
+
                                                 >
-                                                    <option selected>Any Categories</option>
-                                                    <option>Admin Support</option>
-                                                    <option>Customer Service</option>
-                                                    <option>Data Analytics</option>
-                                                    <option>Design & Creative</option>
-                                                    <option>Legal</option>
-                                                    <option>Software Developing</option>
-                                                    <option>IT & Networking</option>
-                                                    <option>Writing</option>
-                                                    <option>Translation</option>
-                                                    <option>Sales & Marketing</option>
+                                                    <option value="Any Categories">Any Categories</option>
+                                                    <option value="Software Developing">Software Developing</option>
+                                                    <option value="IT & Networking">IT & Networking</option>
+                                                    <option value="Writing">Writing</option>
+                                                    <option value="Translations">Translation</option>
+                                                    <option value="Sales & Marketing">Sales & Marketing</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -319,70 +260,18 @@ class Home extends React.Component {
                                 {/*// <!-- Filters / End -->*/}
 
                                 <div class="freelancers-container freelancers-grid-layout">
-                                    {/*// <!--Freelancer -->*/}
-                                    <TutorCard
-                                        avatar={"https://www.w3schools.com/howto/img_avatar.png"}
-                                        name={"Tom"}
-                                        job={"UX/UI Design"}
-                                        location={"London"}
-                                        rate={"60hr / h"}
-                                        jobSuccess={"95%"}
-                                    />
-                                    {/*// <!-- Freelancer / End -->*/}
-
-                                    {/*// <!--Freelancer -->*/}
-                                    <TutorCard
-                                        avatar={"https://www.w3schools.com/howto/img_avatar.png"}
-                                        name={"Tom"}
-                                        job={"UX/UI Design"}
-                                        location={"London"}
-                                        rate={"60hr / h"}
-                                        jobSuccess={"95%"}
-                                    />
-                                    {/*// <!-- Freelancer / End -->*/}
-
-                                    {/*// <!--Freelancer -->*/}
-                                    <TutorCard
-                                        avatar={"https://www.w3schools.com/howto/img_avatar.png"}
-                                        name={"Tom"}
-                                        job={"UX/UI Design"}
-                                        location={"London"}
-                                        rate={"60hr / h"}
-                                        jobSuccess={"95%"}
-                                    />
-                                    {/*// <!-- Freelancer / End -->*/}
-
-                                    {/*// <!--Freelancer -->*/}
-                                    <TutorCard
-                                        avatar={"https://www.w3schools.com/howto/img_avatar.png"}
-                                        name={"Tom"}
-                                        job={"UX/UI Design"}
-                                        location={"London"}
-                                        rate={"60hr / h"}
-                                        jobSuccess={"95%"}
-                                    />
-                                    {/*// <!-- Freelancer / End -->*/}
-
-                                    {/*// <!--Freelancer -->*/}
-                                    <TutorCard
-                                        avatar={"https://www.w3schools.com/howto/img_avatar.png"}
-                                        name={"Tom"}
-                                        job={"UX/UI Design"}
-                                        location={"London"}
-                                        rate={"60hr / h"}
-                                        jobSuccess={"95%"}
-                                    />
-                                    {/*// <!-- Freelancer / End -->*/}
-
-                                    {/*// <!--Freelancer -->*/}
-                                    <TutorCard
-                                        avatar={"https://www.w3schools.com/howto/img_avatar.png"}
-                                        name={"Tom"}
-                                        job={"UX/UI Design"}
-                                        location={"London"}
-                                        rate={"60hr / h"}
-                                        jobSuccess={"95%"}
-                                    />
+                                    {/*// <!--Tutor -->*/}
+                                    {data.all().map(p => (
+                                        <TutorCard key={p.number}
+                                                   avatar={p.avatar}
+                                                   name={p.name}
+                                                   job={"UX/UI Design"}
+                                                   location={"London"}
+                                                   rate={"$60 / hr"}
+                                                   jobSuccess={"95%"}
+                                                   linkProfile={`/${p.number}`}
+                                        />
+                                    ))}
                                     {/*// <!-- Freelancer / End -->*/}
                                 </div>
                             </div>

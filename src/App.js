@@ -9,6 +9,7 @@ import PageNotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import TutorDetail from "./components/TutorDetail";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Header/>
                 <Switch>
                     <Route exact path="/" component={Home}/>
+                    <Route exact path="/:number" component={TutorDetail}/>
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/register" component={Register}/>
                     <Route>

@@ -354,7 +354,7 @@ header.fullwidth .container {
   z-index: 100;
   transform: scale(0.95);
   opacity: 0;
-  visibility: hidden;
+  visibility: visible;
   transition: 0.3s;
   pointer-events: none;
 }
@@ -4352,7 +4352,7 @@ span.blog-item-tag {
 }
 .task-tags {
   display: block;
-  margin: 23px 0 3px;
+  margin: 23px 0 5px;
 }
 .task-tags span {
   transition: 0.3s;
@@ -4362,7 +4362,7 @@ span.blog-item-tag {
   color: #66676b;
   display: inline-block;
   padding: 6px 15px;
-  margin: 2px 0;
+  margin: 5px 0 0 5px;
   line-height: 24px;
 }
 .compact-list .task-listing {
