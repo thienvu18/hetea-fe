@@ -9,9 +9,9 @@ const initState = {
     accountType: "",
     email: ""
   },
-  listTutors: data
+  listTutors: data,
+  generate: []
 };
-
 const doFilter = (tutors, filters) => {
   return tutors.filter(tutor => {
     return (
@@ -56,13 +56,14 @@ const UserReducer = (state = initState, action) => {
             });
           }
         }
-        console.log(st.listTutors);
+        st.generate = data.tutors.slice();
+        console.log("st.generate",st.generate);
       } catch (e) {}
       return st;
     case userConstants.UPDATE_USER:
       return { ...state };
     case userConstants.FILTER: {
-      const tutors = doFilter(state.listTutors.tutors, action.payload.filters);
+      const tutors = doFilter(state.generate, action.payload.filters);
       const listTutors = { ...state.listTutors, tutors };
       return { ...state, listTutors };
     }

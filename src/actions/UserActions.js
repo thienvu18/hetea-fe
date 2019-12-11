@@ -79,7 +79,7 @@ function updatePassword(id,email,currentPassword,newPassword) {
 }
 export const updatePasswordAction = res => {
   return {
-    type: userConstants.GET_ALL,
+    type: userConstants.UPDATE_PASSWORD,
     payload: {
       res
     }
@@ -98,7 +98,7 @@ export const updatePasswordRequest = (id,email,currentPassword,newPassword) => {
 function updateUser(id,name,picture,token) {
   const res = axios({
     method: "PUT",
-    url: `https://hetea.herokuapp.com/users/:${id}`,
+    url: `https://hetea.herokuapp.com/users/${id}`,
     data: {
       access_token: token,
       name: name,
@@ -111,7 +111,7 @@ function updateUser(id,name,picture,token) {
 }
 export const updateUserAction = res => {
   return {
-    type: userConstants.GET_ALL,
+    type: userConstants.UPDATE_USER,
     payload: {
       res
     }

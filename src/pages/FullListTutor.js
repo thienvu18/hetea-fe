@@ -21,7 +21,6 @@ class FullListTutors extends React.Component {
 
   render() {
     const state = this.props;
-    console.log(state.listTutors);
     const token = localStorage.getItem("user");
     state.fetchTutors(token);
     console.log(state.listTutors);
