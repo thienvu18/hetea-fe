@@ -145,9 +145,9 @@ const TutorDetail=(props)=> {
                             <div className="pagination-container margin-top-40 margin-bottom-10">
                                 <nav className="pagination">
                                     <ul>
-                                        <li><a href="#" className="ripple-effect current-page">1</a></li>
-                                        <li><a href="#" className="ripple-effect">2</a></li>
-                                        <li className="pagination-arrow"><a href="#" className="ripple-effect"><i
+                                        <li><a href="/#" className="ripple-effect current-page">1</a></li>
+                                        <li><a href="/#" className="ripple-effect">2</a></li>
+                                        <li className="pagination-arrow"><a href="/#" className="ripple-effect"><i
                                             className="icon-material-outline-keyboard-arrow-right"/></a></li>
                                     </ul>
                                 </nav>

@@ -4,7 +4,7 @@ import Notification from "./Notification";
 import Message from "./Message";
 
 const RightSideMenuLogin = (props) => {
-    const {avatar,name, role}=props;
+    const {avatar,name, role, logout}=props;
     return (
         <div>
             {/*// <!-- Right Side Content / End -->*/}
@@ -108,11 +108,11 @@ const RightSideMenuLogin = (props) => {
                     {/*// <!-- Messages -->*/}
                     <div className="header-notifications user-menu">
                         <div className="header-notifications-trigger">
-                            <a href="/#">
+                            <Link to="/dashboard">
                                 <div className="user-avatar status-online">
                                     <img src={avatar} alt="avatar" />
                                 </div>
-                            </a>
+                            </Link>
                         </div>
 
                         {/*// <!-- Dropdown -->*/}
@@ -140,15 +140,15 @@ const RightSideMenuLogin = (props) => {
 
                             <ul className="user-menu-small-nav">
                                 <li>
-                                    <Link to="/dashboard-settings">
+                                    <Link to="/dashboard">
                                         <i className="icon-material-outline-settings" /> Settings
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/index-logged-out">
+                                    <button onClick={()=>logout()}>
                                         <i className="icon-material-outline-power-settings-new" />{" "}
                                         Logout
-                                    </Link>
+                                    </button>
                                 </li>
                             </ul>
                         </div>

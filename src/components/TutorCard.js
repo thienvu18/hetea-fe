@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import user_avatar from '../images/user-avatar-big-01.jpg'
 import user_country from '../images/flags/gb.svg'
 
 const TutorCard = (props) => {
