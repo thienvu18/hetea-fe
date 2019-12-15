@@ -4,10 +4,16 @@ import data from "../data";
 const initState = {
   currentUser: {
     id: "",
+    idTutor: "",
     avatar: "",
     name: "",
     accountType: "",
-    email: ""
+    email: "",
+    address: "",
+    bio: "",
+    tagLine: "",
+    skills: [],
+    pricePerHour: 0
   },
   listTutors: data,
   generate: []
@@ -27,18 +33,31 @@ const UserReducer = (state = initState, action) => {
       const tmp = { ...state };
       try {
         console.log("get user");
-        const user = action.payload.res.data;
+        const user = action.payload.user.data;
+        const tutor = action.payload.tutor.data;
         tmp.currentUser.id = user.id;
         tmp.currentUser.avatar = user.picture;
         tmp.currentUser.name = user.name;
-        tmp.currentUser.accountType = user.accountType;
+        tmp.currentUser.accountType = user.type;
         tmp.currentUser.email = user.email;
+        tmp.currentUser.address = tutor.address;
+        tmp.currentUser.bio = tutor.bio;
+        tmp.currentUser.tagLine = tutor.tagline;
+        tmp.currentUser.skills = tutor.skills.slice();
+        console.log("tmp.currentUser.skills", tmp.currentUser.skills);
+        tmp.currentUser.pricePerHour = tutor.pricePerHour;
+        tmp.currentUser.idTutor = tutor.id;
       } catch (e) {
         tmp.currentUser.id = "";
         tmp.currentUser.avatar = "";
         tmp.currentUser.name = "";
         tmp.currentUser.accountType = "";
         tmp.currentUser.email = "";
+        tmp.currentUser.address = "";
+        tmp.currentUser.bio = "";
+        tmp.currentUser.tagLine = "";
+        tmp.currentUser.skills = [];
+        tmp.currentUser.pricePerHour = 0;
       }
       return tmp;
     case userConstants.GET_ALL:
@@ -57,11 +76,14 @@ const UserReducer = (state = initState, action) => {
           }
         }
         st.generate = data.tutors.slice();
-        console.log("st.generate",st.generate);
+        console.log("st.generate", st.generate);
       } catch (e) {}
       return st;
     case userConstants.UPDATE_USER:
       return { ...state };
+    case userConstants.UPDATE_PASSWORD:
+      return { ...state };
+
     case userConstants.FILTER: {
       const tutors = doFilter(state.generate, action.payload.filters);
       const listTutors = { ...state.listTutors, tutors };

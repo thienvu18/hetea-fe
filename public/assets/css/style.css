@@ -6256,7 +6256,22 @@ table.basic-table {
   text-align: center;
   line-height: 36px;
 }
-.keyword-input-container .keyword-input-button i {
+.keyword-input-container .keyword-button{ /* edited*/
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 36px;
+  width: 36px;
+  padding: 0;
+  color: #fff;
+  background-color: #F45B69;
+  border-radius: 4px;
+  margin: 6px;
+  font-size: 19px;
+  text-align: center;
+  line-height: 36px;
+}
+.keyword-input-container .keyword-button i {/* edited*/
   color: #fff;
   position: relative;
   top: 2px;

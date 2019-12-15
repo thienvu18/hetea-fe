@@ -1,42 +1,110 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  getCurrentUserRequest,
+  getCurrentUserRequest, updatePasswordRequest,
   updateUserRequest
 } from "../actions/UserActions";
 import { Redirect } from "react-router-dom";
+import RangeSlider from "../components/Slider";
+import SkillTag from "../components/SkillTag";
 
 class AccountSettings extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      skillsArray: this.props.skills
+    };
     this.name = "";
     this.email = "";
-    this.currentPassword = "";
     this.NewPassword = "";
     this.ConfirmtPassword = "";
+    this.hourlyRate = 0;
     this.avatar = "";
+    this.skill = "";
+    this.address = "";
+    this.bio = "";
+    this.tagLine = "";
   }
+
+  removeSkills = value => {
+    const { skillsArray } = this.state;
+    const i = skillsArray.indexOf(value);
+    if (i !== -1) {
+      skillsArray.splice(i, 1);
+    }
+    this.setState({
+      skillsArray
+    });
+  };
+
+  addSkill = value => {
+    const { skillsArray } = this.state;
+
+    skillsArray.push(value);
+    this.setState({
+      skillsArray
+    });
+  };
+
+  saveChanges=  (token)=>{
+    const state=this.props;
+    const {skillsArray}=this.state;
+    if (this.NewPassword === this.ConfirmtPassword)
+    {
+      state.updateUser(
+          state.idTutor,
+          state.id,
+          this.name,
+          state.avatar,
+          state.accountType,
+          this.address,
+          this.bio,
+          skillsArray,
+          this.hourlyRate,
+          this.tagLine,
+          token
+      );
+      state.updatePassword(state.id,state.email,this.NewPassword);
+      return alert("update successful");
+    }
+    return alert("password not match");
+  };
+
   render() {
     const state = this.props;
+    const { skillsArray } = this.state;
+
     this.name = state.name;
     this.email = state.email;
-    this.password = state.password;
+    this.hourlyRate = state.pricePerHour;
     this.avatar = state.avatar;
+    this.address = state.address;
+    this.bio = state.bio;
+    this.tagLine = state.tagLine;
 
     const token = localStorage.getItem("user");
-    console.log(token);
     if (!token && state.isLogin === false) {
       return <Redirect to="/" />;
     }
-    // state.fetchCurrentUser(token);
+
+    const tag = skillsArray.map((skill, index) => {
+      return (
+        <SkillTag
+          key={index}
+          value={skill}
+          click={() => this.removeSkills(skill)}
+        />
+      );
+    });
+
     return (
       <>
         {/*//             <!-- Dashboard Content*/}
         {/*// ================================================== -->*/}
-        <div class="dashboard-content-container" data-simplebar>
-          <div class="dashboard-content-inner">
+        <div className="dashboard-content-container" data-simplebar>
+          <div className="dashboard-content-inner">
             {/*// <!-- Dashboard Headline -->*/}
-            <div class="dashboard-headline">
+            <div className="dashboard-headline">
               <h3>Settings</h3>
 
               {/*// <!-- Breadcrumbs -->*/}
@@ -54,49 +122,49 @@ class AccountSettings extends React.Component {
             </div>
 
             {/*// <!-- Row -->*/}
-            <div class="row">
+            <div className="row">
               {/*// <!-- Dashboard Box -->*/}
-              <div class="col-xl-12">
-                <div class="dashboard-box margin-top-0">
+              <div className="col-xl-12">
+                <div className="dashboard-box margin-top-0">
                   {/*// <!-- Headline -->*/}
-                  <div class="headline">
+                  <div className="headline">
                     <h3>
-                      <i class="icon-material-outline-account-circle" /> My
+                      <i className="icon-material-outline-account-circle" /> My
                       Account
                     </h3>
                   </div>
 
-                  <div class="content with-padding padding-bottom-0">
-                    <div class="row">
-                      <div class="col-auto">
+                  <div className="content with-padding padding-bottom-0">
+                    <div className="row ">
+                      <div className="col-auto">
                         <div
-                          class="avatar-wrapper"
+                          className="avatar-wrapper"
                           data-tippy-placement="bottom"
                           title="Change Avatar"
                         >
                           <img
-                            class="profile-pic"
+                            className="profile-pic"
                             src={state.avatar}
                             alt="Avatar"
                           />
-                          <div class="upload-button" />
+                          <div className="upload-button" />
                           <input
-                            class="file-upload"
+                            className="file-upload"
                             type="file"
                             accept="image/*"
                           />
                         </div>
                       </div>
 
-                      <div class="col">
-                        <div class="row">
-                          <div class="col-xl-6">
-                            <div class="submit-field">
-                              <h5>First Name</h5>
+                      <div className="col">
+                        <div className="row">
+                          <div className="col-xl-4">
+                            <div className="submit-field">
+                              <h5>Name</h5>
                               <input
                                 type="text"
-                                class="with-border"
-                                // value={this.name}
+                                className="with-border"
+                                defaultValue={state.name}
                                 onChange={event =>
                                   (this.name = event.target.value)
                                 }
@@ -104,35 +172,24 @@ class AccountSettings extends React.Component {
                             </div>
                           </div>
 
-                          <div class="col-xl-6">
-                            <div class="submit-field">
-                              <h5>Last Name</h5>
-                              <input
-                                type="text"
-                                class="with-border"
-                                value="Smith"
-                              />
-                            </div>
-                          </div>
-
-                          <div class="col-xl-6">
+                          <div className="col-xl-4">
                             {/*// <!-- Account Type -->*/}
-                            <div class="submit-field">
+                            <div className="submit-field">
                               <h5>Account Type</h5>
-                              <div class="account-type">
+                              <div className="account-type">
                                 <div>
                                   <input
                                     type="radio"
                                     name="account-type-radio"
                                     id="freelancer-radio"
-                                    class="account-type-radio"
+                                    className="account-type-radio"
                                     checked
                                   />
                                   <label
                                     form="freelancer-radio"
-                                    class="ripple-effect-dark"
+                                    className="ripple-effect-dark"
                                   >
-                                    <i class="icon-material-outline-account-circle" />{" "}
+                                    <i className="icon-material-outline-account-circle" />{" "}
                                     Tutor
                                   </label>
                                 </div>
@@ -140,13 +197,13 @@ class AccountSettings extends React.Component {
                             </div>
                           </div>
 
-                          <div class="col-xl-6">
-                            <div class="submit-field">
+                          <div className="col-xl-4">
+                            <div className="submit-field">
                               <h5>Email</h5>
                               <input
                                 type="text"
-                                class="with-border"
-                                value={this.email}
+                                className="with-border"
+                                value={state.email}
                               />
                             </div>
                           </div>
@@ -158,149 +215,123 @@ class AccountSettings extends React.Component {
               </div>
 
               {/*// <!-- Dashboard Box -->*/}
-              <div class="col-xl-12">
-                <div class="dashboard-box">
+              <div className="col-xl-12">
+                <div className="dashboard-box">
                   {/*// <!-- Headline -->*/}
-                  <div class="headline">
+                  <div className="headline">
                     <h3>
-                      <i class="icon-material-outline-face" /> My Profile
+                      <i className="icon-material-outline-face" /> My Profile
                     </h3>
                   </div>
 
-                  <div class="content">
-                    <ul class="fields-ul">
+                  <div className="content">
+                    <ul className="fields-ul">
                       <li>
-                        <div class="row">
-                          <div class="col-xl-6">
-                            <div class="submit-field">
-                              <div class="bidding-widget">
+                        <div className="row">
+                          <div className="col-xl-6">
+                            <div className="submit-field">
+                              <div className="bidding-widget">
                                 {/*// <!-- Headline -->*/}
-                                <span class="bidding-detail">
+                                <span className="bidding-detail">
                                   Set your <strong>minimal hourly rate</strong>
                                 </span>
 
                                 {/*// <!-- Slider -->*/}
-                                <div class="bidding-value margin-bottom-10">
-                                  $<span id="biddingVal" />
+                                <div className="bidding-value margin-bottom-10">
+                                  $
+                                  <span id="biddingVal">
+                                    {state.pricePerHour}
+                                  </span>
                                 </div>
-                                <input
-                                  class="bidding-slider"
-                                  type="text"
-                                  value=""
-                                  data-slider-handle="custom"
-                                  data-slider-currency="$"
-                                  data-slider-min="5"
-                                  data-slider-max="150"
-                                  data-slider-value="35"
-                                  data-slider-step="1"
-                                  data-slider-tooltip="hide"
+                                <RangeSlider
+                                  value={state.pricePerHour}
+                                  handleChange={newValue => {
+                                    this.hourlyRate = newValue;
+                                    // console.log("hourlyRate", this.hourlyRate);
+                                  }}
                                 />
                               </div>
                             </div>
                           </div>
 
-                          <div class="col-xl-6">
-                            <div class="submit-field">
+                          <div className="col-xl-6">
+                            <div className="submit-field">
                               <h5>
                                 Skills
                                 <i
-                                  class="help-icon"
+                                  className="help-icon"
                                   data-tippy-placement="right"
                                   title="Add up to 10 skills"
                                 />
                               </h5>
 
                               {/*// <!-- Skills List -->*/}
-                              <div class="keywords-container">
-                                <div class="keyword-input-container">
+                              <div className="keywords-container">
+                                <div className="keyword-input-container">
                                   <input
                                     type="text"
-                                    class="keyword-input with-border"
+                                    className="keyword-input with-border"
                                     placeholder="e.g. Angular, Laravel"
+                                    onChange={event => {
+                                      this.skill = event.target.value;
+                                    }}
                                   />
-                                  <button class="keyword-input-button ripple-effect">
-                                    <i class="icon-material-outline-add" />
+                                  <button
+                                    className="keyword-button"
+                                    onClick={() => this.addSkill(this.skill)}
+                                  >
+                                    <i className="icon-material-outline-add" />
                                   </button>
                                 </div>
-                                <div class="keywords-list">
-                                  <span class="keyword">
-                                    <span class="keyword-remove" />
-                                    <span class="keyword-text">Angular</span>
-                                  </span>
-                                  <span class="keyword">
-                                    <span class="keyword-remove" />
-                                    <span class="keyword-text">Vue JS</span>
-                                  </span>
-                                  <span class="keyword">
-                                    <span class="keyword-remove" />
-                                    <span class="keyword-text">iOS</span>
-                                  </span>
-                                  <span class="keyword">
-                                    <span class="keyword-remove" />
-                                    <span class="keyword-text">Android</span>
-                                  </span>
-                                  <span class="keyword">
-                                    <span class="keyword-remove" />
-                                    <span class="keyword-text">Laravel</span>
-                                  </span>
-                                </div>
-                                <div class="clearfix" />
+                                <div className="keywords-list">{tag}</div>
+                                <div className="clearfix" />
                               </div>
                             </div>
                           </div>
                         </div>
                       </li>
                       <li>
-                        <div class="row">
-                          <div class="col-xl-6">
-                            <div class="submit-field">
+                        <div className="row">
+                          <div className="col-xl-6">
+                            <div className="submit-field">
                               <h5>Tagline</h5>
                               <input
                                 type="text"
-                                class="with-border"
-                                value="iOS Expert + Node Dev"
+                                className="with-border"
+                                defaultValue={state.tagLine}
+                                onChange={event => {
+                                  this.tagLine = event.target.value;
+                                }}
                               />
                             </div>
                           </div>
 
-                          <div class="col-xl-6">
-                            <div class="submit-field">
-                              <h5>Nationality</h5>
-                              <select
-                                class="selectpicker with-border"
-                                data-size="7"
-                                title="Select Job Type"
-                                data-live-search="true"
-                              >
-                                <option value="TM">Turkmenistan</option>
-                                <option value="TV">Tuvalu</option>
-                                <option value="UG">Uganda</option>
-                                <option value="UA">Ukraine</option>
-                                <option value="GB">United Kingdom</option>
-                                <option value="US" selected>
-                                  United States
-                                </option>
-                                <option value="UY">Uruguay</option>
-                                <option value="UZ">Uzbekistan</option>
-                                <option value="YE">Yemen</option>
-                                <option value="ZM">Zambia</option>
-                                <option value="ZW">Zimbabwe</option>
-                              </select>
+                          <div className="col-xl-6">
+                            <div className="submit-field">
+                              <h5>Address</h5>
+                              <input
+                                type="text"
+                                className="with-border"
+                                defaultValue={state.address}
+                                onChange={event => {
+                                  this.address = event.target.value;
+                                }}
+                              />
                             </div>
                           </div>
 
-                          <div class="col-xl-12">
-                            <div class="submit-field">
+                          <div className="col-xl-12">
+                            <div className="submit-field">
                               <h5>Introduce Yourself</h5>
-                              <textarea cols="30" rows="5" class="with-border">
-                                Leverage agile frameworks to provide a robust
-                                synopsis for high level overviews. Iterative
-                                approaches to corporate strategy foster
-                                collaborative thinking to further the overall
-                                value proposition. Organically grow the holistic
-                                world view of disruptive innovation via
-                                workplace diversity and empowerment.
-                              </textarea>
+                              <textarea
+                                cols="30"
+                                rows="5"
+                                className="with-border"
+                                defaultValue={state.bio}
+                                onChange={event => {
+                                  this.bio = event.target.value;
+                                }}
+                              />
                             </div>
                           </div>
                         </div>
@@ -311,37 +342,24 @@ class AccountSettings extends React.Component {
               </div>
 
               {/*// <!-- Dashboard Box -->*/}
-              <div class="col-xl-12">
-                <div id="test1" class="dashboard-box">
+              <div className="col-xl-12">
+                <div id="test1" className="dashboard-box">
                   {/*// <!-- Headline -->*/}
-                  <div class="headline">
+                  <div className="headline">
                     <h3>
-                      <i class="icon-material-outline-lock" /> Password &
+                      <i className="icon-material-outline-lock" /> Password &
                       Security
                     </h3>
                   </div>
 
-                  <div class="content with-padding">
-                    <div class="row">
-                      <div class="col-xl-4">
-                        <div class="submit-field">
-                          <h5>Current Password</h5>
-                          <input
-                            type="password"
-                            class="with-border"
-                            onChange={event =>
-                              (this.currentPassword = event.target.value)
-                            }
-                          />
-                        </div>
-                      </div>
-
-                      <div class="col-xl-4">
-                        <div class="submit-field">
+                  <div className="content with-padding">
+                    <div className="row">
+                      <div className="col-xl-4">
+                        <div className="submit-field">
                           <h5>New Password</h5>
                           <input
                             type="password"
-                            class="with-border"
+                            className="with-border"
                             onChange={event =>
                               (this.NewPassword = event.target.value)
                             }
@@ -349,12 +367,12 @@ class AccountSettings extends React.Component {
                         </div>
                       </div>
 
-                      <div class="col-xl-4">
-                        <div class="submit-field">
+                      <div className="col-xl-4">
+                        <div className="submit-field">
                           <h5>Repeat New Password</h5>
                           <input
                             type="password"
-                            class="with-border"
+                            className="with-border"
                             onChange={event =>
                               (this.ConfirmtPassword = event.target.value)
                             }
@@ -362,11 +380,11 @@ class AccountSettings extends React.Component {
                         </div>
                       </div>
 
-                      <div class="col-xl-12">
-                        <div class="checkbox">
+                      <div className="col-xl-12">
+                        <div className="checkbox">
                           <input type="checkbox" id="two-step" checked />
                           <label form="two-step">
-                            <span class="checkbox-icon" /> Enable Two-Step
+                            <span className="checkbox-icon" /> Enable Two-Step
                             Verification via Email
                           </label>
                         </div>
@@ -377,12 +395,25 @@ class AccountSettings extends React.Component {
               </div>
 
               {/*// <!-- Button -->*/}
-              <div class="col-xl-12">
+              <div className="col-xl-12">
                 <button
-                  class="button ripple-effect big margin-top-30"
-                  onClick={() =>
-                    state.updateUser(state.id, this.name, state.avatar, token)
-                  }
+                  className="button ripple-effect big margin-top-30"
+                  onClick={() => {
+                    // console.log("mmmm", [
+                    //   state.idTutor,
+                    //   state.id,
+                    //   this.name,
+                    //   state.avatar,
+                    //   state.accountType,
+                    //   this.address,
+                    //   this.bio,
+                    //   skillsArray,
+                    //   this.hourlyRate,
+                    //   this.tagLine,
+                    //   token
+                    // ]);
+                    this.saveChanges(token)
+                  }}
                 >
                   Save Changes
                 </button>
@@ -390,7 +421,12 @@ class AccountSettings extends React.Component {
             </div>
             {/*// <!-- Row / End -->*/}
           </div>
+          {/*// <!-- Spacer -->*/}
+          <div class="margin-top-70" />
+          {/*// <!-- Spacer / End-->*/}
+
         </div>
+
         {/*// <!-- Dashboard Content / End -->*/}
       </>
     );
@@ -402,10 +438,16 @@ const mapStateToProps = state => {
     isLogin: state.AuthenticationReducer.isLogin,
     token: state.AuthenticationReducer.token,
     id: state.UserReducer.currentUser.id,
+    idTutor: state.UserReducer.currentUser.idTutor,
     avatar: state.UserReducer.currentUser.avatar,
     name: state.UserReducer.currentUser.name,
     accountType: state.UserReducer.currentUser.accountType,
-    email: state.UserReducer.currentUser.email
+    email: state.UserReducer.currentUser.email,
+    address: state.UserReducer.currentUser.address,
+    bio: state.UserReducer.currentUser.bio,
+    skills: state.UserReducer.currentUser.skills,
+    tagLine: state.UserReducer.currentUser.tagLine,
+    pricePerHour: state.UserReducer.currentUser.pricePerHour
   };
 };
 
@@ -414,8 +456,37 @@ const mapDispatchToProps = dispatch => {
     fetchCurrentUser: token => {
       dispatch(getCurrentUserRequest(token));
     },
-    updateUser: (id, name, picture, token) => {
-      dispatch(updateUserRequest(id, name, picture, token));
+    updateUser: (
+      id,
+      user_id,
+      name,
+      picture,
+      type,
+      address,
+      bio,
+      skills,
+      pricePerHour,
+      tagline,
+      token
+    ) => {
+      dispatch(
+        updateUserRequest(
+          id,
+          user_id,
+          name,
+          picture,
+          type,
+          address,
+          bio,
+          skills,
+          pricePerHour,
+          tagline,
+          token
+        )
+      );
+    },
+    updatePassword: (id,email,newPass)=>{
+      dispatch(updatePasswordRequest(id,email,newPass));
     }
   };
 };

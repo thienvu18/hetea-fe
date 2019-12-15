@@ -19,7 +19,7 @@ class Register extends React.Component {
 
     register = () => {
         const state = this.props;
-        console.log(this.accountType)
+        console.log(this.accountType);
         if (this.newPassword === this.passwordConfirm)
             return state.doRegister(
                 this.newEmail,

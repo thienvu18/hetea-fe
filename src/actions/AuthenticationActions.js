@@ -17,6 +17,20 @@ function doRegister(email, password, type) {
   return res;
 }
 
+function doRegisterTutor(user_id) {
+  const res = axios({
+    method: "POST",
+    url: "https://hetea.herokuapp.com/tutors",
+    data: {
+      access_token: "x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL",
+      user_id: user_id,
+    }
+  }).catch(err => {
+    return err;
+  });
+  return res;
+}
+
 function doGoogleRegister(token) {
   const res = axios({
     method: "POST",
@@ -54,10 +68,14 @@ export const registerAction = res => {
 
 export const registerRequest = (email, password, type) => {
   return dispatch => {
-    return doRegister(email, password, type).then(res => {
-      console.log(res.request.status);
-
-      dispatch(registerAction(res));
+    return doRegister(email, password, type).then(user => {
+      console.log(user.request.status);
+      if(user.request.status===201){
+        if(type==="tutor"){
+          doRegisterTutor(user.data.user.id);
+        }
+      }
+      dispatch(registerAction(user));
     });
   };
 };
@@ -104,6 +122,7 @@ export const loginAction = res => {
 export const loginRequest = (email, password) => {
   return dispatch => {
     return login(email, password).then(res => {
+      console.log("login",res);
       dispatch(loginAction(res));
     });
   };

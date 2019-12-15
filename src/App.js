@@ -9,7 +9,7 @@ import PageNotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import TutorDetail from "./components/TutorDetail";
+import TutorDetail from "./pages/TutorDetail";
 import FullListTutors from "./pages/FullListTutor";
 import TutorHome from "./pages/TutorHome";
 import AccountSettings from "./pages/AccountSettings";

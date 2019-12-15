@@ -5,7 +5,6 @@ import TutorHome from "./TutorHome";
 import { Link } from "react-router-dom";
 import banner from "../images/home-background.jpg";
 import TutorCard from "../components/TutorCard";
-import data from "../data";
 import {getCurrentUserRequest} from "../actions/UserActions";
 
 class Home extends React.Component {
@@ -197,7 +196,7 @@ class Home extends React.Component {
               <div class="col-xl-12">
                 <div class="default-slick-carousel freelancers-container freelancers-grid-layout">
                   {/*// <!--Tutor -->*/}
-                  {data.all().map(p => (
+                  {state.listTutors.all().map(p => (
                     <TutorCard
                       key={p.number}
                       avatar={p.avatar}
@@ -223,6 +222,7 @@ class Home extends React.Component {
 const mapStateToProps = state => {
   return {
     isLogin: state.AuthenticationReducer.isLogin,
+    listTutors: state.UserReducer.listTutors
   };
 };
 

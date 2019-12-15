@@ -2,31 +2,51 @@ import userConstants from "../constants/UserConstants";
 import axios from "axios";
 
 function getCurrentUser(token) {
-  const res = axios({
+  const user = axios({
     method: "GET",
     url: "https://hetea.herokuapp.com/users/me",
-    headers:{
+    headers: {
       Authorization: `Bearer ${token}`
-    },
+    }
   }).catch(err => {
     return err;
   });
-  return res;
+  return user;
 }
-export const getCurrentUserAction = res => {
+function getCurrentTutor(user_id, token) {
+  const tutor = axios({
+    method: "GET",
+    url: "https://hetea.herokuapp.com/tutors/me",
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    data: {
+      user_id: user_id
+    }
+  }).catch(err => {
+    return err;
+  });
+  return tutor;
+}
+
+export const getCurrentUserAction = (user, tutor) => {
   return {
     type: userConstants.GET_CURRENT_USER,
     payload: {
-      res
+      user,
+      tutor
     }
   };
 };
 
 export const getCurrentUserRequest = token => {
   return dispatch => {
-    return getCurrentUser(token).then(res => {
-      console.log(res);
-      dispatch(getCurrentUserAction(res));
+    return getCurrentUser(token).then(user => {
+      console.log("user", user);
+      getCurrentTutor(user.data.id, token).then(tutor => {
+        // console.log("tutor",tutor);
+        dispatch(getCurrentUserAction(user, tutor));
+      });
     });
   };
 };
@@ -35,9 +55,9 @@ function getAllTutors(token) {
   const res = axios({
     method: "GET",
     url: "https://hetea.herokuapp.com/users",
-    headers:{
+    headers: {
       Authorization: `Bearer ${token}`
-    },
+    }
   }).catch(err => {
     return err;
   });
@@ -61,15 +81,15 @@ export const getAllTutorsRequest = token => {
   };
 };
 
-function updatePassword(id,email,currentPassword,newPassword) {
-  const hash = btoa(`${email}:${currentPassword}`);
+function updatePassword(id, email, newPassword) {
+  const hash = btoa(`${email}:${newPassword}`);
   const res = axios({
     method: "PUT",
-    url: "https://hetea.herokuapp.com/users",
-    headers:{
+    url: `https://hetea.herokuapp.com/users/${id}/password`,
+    headers: {
       Authorization: `Bearer ${hash}`
     },
-    data:{
+    data: {
       password: newPassword
     }
   }).catch(err => {
@@ -86,29 +106,60 @@ export const updatePasswordAction = res => {
   };
 };
 
-export const updatePasswordRequest = (id,email,currentPassword,newPassword) => {
+export const updatePasswordRequest = (
+  id,
+  email,
+  newPassword
+) => {
   return dispatch => {
-    return updatePassword(id,email,currentPassword,newPassword).then(res => {
-      console.log(res);
+    return updatePassword(id, email, newPassword).then(res => {
+      console.log("update password",res);
       dispatch(updatePasswordAction(res));
     });
   };
 };
 
-function updateUser(id,name,picture,token) {
+const updateUser = async (id, name, picture, token) => {
   const res = axios({
     method: "PUT",
     url: `https://hetea.herokuapp.com/users/${id}`,
     data: {
       access_token: token,
       name: name,
-      picture:picture,
+      picture: picture
     }
   }).catch(err => {
     return err;
   });
   return res;
-}
+};
+const updateTutor = async (
+  id,
+  user_id,
+  address,
+  bio,
+  skills,
+  pricePerHour,
+  tagline,
+) => {
+  const res = axios({
+    method: "PUT",
+    url: `https://hetea.herokuapp.com/tutors/${id}`,
+    data: {
+      access_token: "x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL",
+      user_id: user_id,
+      address: address,
+      bio: bio,
+      skills: skills,
+      pricePerHour: pricePerHour,
+      tagline: tagline
+    }
+  }).catch(err => {
+    return err;
+  });
+  return res;
+};
+
 export const updateUserAction = res => {
   return {
     type: userConstants.UPDATE_USER,
@@ -118,21 +169,45 @@ export const updateUserAction = res => {
   };
 };
 
-export const updateUserRequest = (id,name,picture,token) => {
+export const updateUserRequest = (
+  id,
+  user_id,
+  name,
+  picture,
+  type,
+  address,
+  bio,
+  skills,
+  pricePerHour,
+  tagLine,
+  token
+) => {
   return dispatch => {
-    return updateUser(id,name,picture,token).then(res => {
-      console.log(res);
-      dispatch(updateUserAction(res));
+    return updateUser(user_id, name, picture, token).then(user => {
+      console.log("update user", user);
+      if (type === "tutor") {
+        updateTutor(
+          id,
+          user_id,
+          address,
+          bio,
+          skills,
+          pricePerHour,
+          tagLine,
+        ).then(tutor => {
+          console.log("update tutor", tutor);
+          dispatch(updateUserAction(user));
+        });
+      }
     });
   };
 };
 
-export const filterAction=(filters)=>{
-  return{
+export const filterAction = filters => {
+  return {
     type: userConstants.FILTER,
-    payload:{
-      filters,
+    payload: {
+      filters
     }
-  }
+  };
 };
-
