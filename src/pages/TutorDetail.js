@@ -3,12 +3,29 @@ import banner from '../images/single-freelancer.jpg'
 import data from "../data";
 import {filterAction, getAllTutorsRequest} from "../actions/UserActions";
 import {connect} from "react-redux";
+import SkillTag from "../components/SkillTag";
+import ContractForm from "../components/ContractForm";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Rating from '@material-ui/lab/Rating';
+
+const BorderLinearProgress = withStyles({
+    root: {
+        backgroundColor: "#e0e0e0"
+    },
+    bar: {
+        borderRadius: 20,
+        backgroundColor: '#F45B69',
+    },
+})(LinearProgress);
 
 class TutorDetail extends React.Component{
     render() {
         const state=this.props;
         const tutor = state.listTutors.get(
-            parseInt(this.props.match.params.number, 10)
+            this.props.match.params.number
         );
         if (!tutor) {
             return <div>Sorry, but the player was not found</div>
@@ -24,12 +41,15 @@ class TutorDetail extends React.Component{
                                 <div className="single-page-header-inner">
                                     <div className="left-side">
                                         <div className="header-image freelancer-avatar"><img
-                                            src={tutor.avatar} alt=""/></div>
+                                            src={tutor.picture} alt=""/></div>
                                         <div className="header-details">
-                                            <h3>{tutor.name} <span>iOS Expert + Node Dev</span></h3>
+                                            <h3>{tutor.name} <span>{tutor.tagline}</span></h3>
                                             <ul>
                                                 <li>
                                                     <div className="star-rating" data-rating="5.0"/>
+                                                    <Box component="fieldset" mb={3} borderColor="transparent">
+                                                        <Rating name="read-only" value={5.0} readOnly />
+                                                    </Box>
                                                 </li>
                                                 <li>
                                                     <div className="verified-badge-with-title">Verified</div>
@@ -52,15 +72,7 @@ class TutorDetail extends React.Component{
                             {/*// <!-- Page Content -->*/}
                             <div className="single-page-section">
                                 <h3 className="margin-bottom-25">About Me</h3>
-                                <p>Leverage agile frameworks to provide a robust synopsis for high level overviews.
-                                    Iterative approaches to corporate strategy foster collaborative thinking to further
-                                    the overall value proposition. Organically grow the holistic world view of
-                                    disruptive innovation via workplace diversity and empowerment.</p>
-
-                                <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta
-                                    test. Override the digital divide with additional clickthroughs from DevOps.
-                                    Nanotechnology immersion along the information highway will close the loop on
-                                    focusing solely on the bottom line.</p>
+                                <p>{tutor.bio}</p>
                             </div>
 
                             {/*// <!-- Boxed List -->*/}
@@ -144,20 +156,6 @@ class TutorDetail extends React.Component{
                                     </li>
                                 </ul>
 
-                                {/*// <!-- Pagination -->*/}
-                                <div className="clearfix"/>
-                                <div className="pagination-container margin-top-40 margin-bottom-10">
-                                    <nav className="pagination">
-                                        <ul>
-                                            <li><a href="/#" className="ripple-effect current-page">1</a></li>
-                                            <li><a href="/#" className="ripple-effect">2</a></li>
-                                            <li className="pagination-arrow"><a href="/#" className="ripple-effect"><i
-                                                className="icon-material-outline-keyboard-arrow-right"/></a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                                <div className="clearfix"/>
-                                {/*// <!-- Pagination / End -->*/}
 
                             </div>
                             {/*// <!-- Boxed List / End -->*/}
@@ -171,15 +169,12 @@ class TutorDetail extends React.Component{
 
                                 {/*// <!-- Profile Overview -->*/}
                                 <div className="profile-overview">
-                                    <div className="overview-item"><strong>$35</strong><span>Hourly Rate</span></div>
+                                    <div className="overview-item"><strong>{`$${tutor.pricePerHour}`}</strong><span>Hourly Rate</span></div>
                                     <div className="overview-item"><strong>53</strong><span>Jobs Done</span></div>
                                     <div className="overview-item"><strong>22</strong><span>Rehired</span></div>
                                 </div>
 
-                                {/*// <!-- Button -->*/}
-                                <a href="#small-dialog"
-                                   className="apply-now-button popup-with-zoom-anim margin-bottom-50 ">Contact <i
-                                    className="icon-material-outline-arrow-right-alt"/></a>
+                                <ContractForm name={tutor.name}/>
 
                                 {/*// <!-- Freelancer Indicators -->*/}
                                 <div className="sidebar-widget">
@@ -188,32 +183,44 @@ class TutorDetail extends React.Component{
                                         {/*// <!-- Indicator -->*/}
                                         <div className="indicator">
                                             <strong>88%</strong>
-                                            <div className="indicator-bar" data-indicator-percentage="88"><span/>
-                                            </div>
+                                            <BorderLinearProgress
+                                                variant="determinate"
+                                                // color="secondary"
+                                                value={88}
+                                            />
                                             <span>Job Success</span>
                                         </div>
 
                                         {/*// <!-- Indicator -->*/}
                                         <div className="indicator">
                                             <strong>100%</strong>
-                                            <div className="indicator-bar" data-indicator-percentage="100"><span/>
-                                            </div>
+                                            <BorderLinearProgress
+                                                variant="determinate"
+                                                // color="secondary"
+                                                value={100}
+                                            />
                                             <span>Recommendation</span>
                                         </div>
 
                                         {/*// <!-- Indicator -->*/}
                                         <div className="indicator">
                                             <strong>90%</strong>
-                                            <div className="indicator-bar" data-indicator-percentage="90"><span/>
-                                            </div>
+                                            <BorderLinearProgress
+                                                variant="determinate"
+                                                // color="secondary"
+                                                value={90}
+                                            />
                                             <span>On Time</span>
                                         </div>
 
                                         {/*// <!-- Indicator -->*/}
                                         <div className="indicator">
                                             <strong>80%</strong>
-                                            <div className="indicator-bar" data-indicator-percentage="80"><span/>
-                                            </div>
+                                            <BorderLinearProgress
+                                                variant="determinate"
+                                                // color="secondary"
+                                                value={80}
+                                            />
                                             <span>On Budget</span>
                                         </div>
                                     </div>
@@ -223,14 +230,18 @@ class TutorDetail extends React.Component{
                                 <div className="sidebar-widget">
                                     <h3>Skills</h3>
                                     <div className="task-tags">
-                                        <span>iOS</span>
-                                        <span>Android</span>
-                                        <span>mobile apps</span>
-                                        <span>design</span>
-                                        <span>Python</span>
-                                        <span>Flask</span>
-                                        <span>PHP</span>
-                                        <span>WordPress</span>
+                                        {
+                                            tutor.skills.map((skill, index) => {
+                                                return (
+                                                    <span
+                                                        key={index}
+                                                    >
+
+                                                        {skill}
+                                                    </span>
+                                                );
+                                            })
+                                        }
                                     </div>
                                 </div>
 
@@ -262,106 +273,6 @@ class TutorDetail extends React.Component{
                     </div>
                 </div>
 
-                {/*// <!-- Make an Offer Popup-->*/}
-                <div id="small-dialog" class="zoom-anim-dialog mfp-hide dialog-with-tabs">
-
-                    {/*// <!--Tabs -->*/}
-                    <div class="sign-in-form">
-
-                        <ul class="popup-tabs-nav">
-                            <li><a href="#tab">Contact</a></li>
-                        </ul>
-
-                        <div class="popup-tabs-container">
-
-                            {/*// <!-- Tab -->*/}
-                            <div class="popup-tab-content" id="tab">
-
-                                {/*// <!-- Welcome Text -->*/}
-                                <div class="welcome-text">
-                                    <h3>Discuss your project with {tutor.name}</h3>
-                                </div>
-
-                                {/*// <!-- Form -->*/}
-                                <form method="post">
-
-                                    <div class="input-with-icon-left">
-                                        <i class="icon-material-outline-account-circle"/>
-                                        <input type="text" class="input-text with-border" name="name" id="name"
-                                               placeholder="First and Last Name"/>
-                                    </div>
-
-                                    <div class="input-with-icon-left">
-                                        <i class="icon-material-baseline-mail-outline"/>
-                                        <input type="text" class="input-text with-border" name="emailaddress"
-                                               id="emailaddress" placeholder="Email Address"/>
-                                    </div>
-
-                                    <textarea name="textarea" cols="10" placeholder="Message" class="with-border"/>
-
-                                    <div class="uploadButton margin-top-25">
-                                        <input class="uploadButton-input" type="file" accept="image/*, application/pdf"
-                                               id="upload" multiple/>
-                                        <label class="uploadButton-button ripple-effect" form="upload">Add
-                                            Attachments</label>
-                                        <span
-                                            class="uploadButton-file-name">Allowed file types: zip, pdf, png, jpg <br/> Max. files size: 50 MB.</span>
-                                    </div>
-
-                                </form>
-
-                                {/*// <!-- Button -->*/}
-                                <button class="button margin-top-35 full-width button-sliding-icon ripple-effect"
-                                        type="submit">Contact <i class="icon-material-outline-arrow-right-alt"/>
-                                </button>
-
-                            </div>
-                            {/*// <!-- Login -->*/}
-                            <div class="popup-tab-content" id="loginn">
-
-                                {/*// <!-- Welcome Text -->*/}
-                                <div class="welcome-text">
-                                    <h3>Discuss Your Project With Tom</h3>
-                                </div>
-
-                                {/*// <!-- Form -->*/}
-                                <form method="post" id="make-an-offer-form">
-
-                                    <div class="input-with-icon-left">
-                                        <i class="icon-material-outline-account-circle"/>
-                                        <input type="text" class="input-text with-border" name="name2" id="name2"
-                                               placeholder="First and Last Name" required/>
-                                    </div>
-
-                                    <div class="input-with-icon-left">
-                                        <i class="icon-material-baseline-mail-outline"/>
-                                        <input type="text" class="input-text with-border" name="emailaddress2"
-                                               id="emailaddress2" placeholder="Email Address" required/>
-                                    </div>
-
-                                    <textarea name="textarea" cols="10" placeholder="Message" class="with-border"/>
-
-                                    <div class="uploadButton margin-top-25">
-                                        <input class="uploadButton-input" type="file" accept="image/*, application/pdf"
-                                               id="upload-cv" multiple/>
-                                        <label class="uploadButton-button" form="upload-cv">Add Attachments</label>
-                                        <span
-                                            class="uploadButton-file-name">Allowed file types: zip, pdf, png, jpg <br/> Max. files size: 50 MB.</span>
-                                    </div>
-
-                                </form>
-
-                                {/*// <!-- Button -->*/}
-                                <button class="button full-width button-sliding-icon ripple-effect" type="submit"
-                                        form="make-an-offer-form">Make an Offer <i
-                                    class="icon-material-outline-arrow-right-alt"/></button>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                {/*// <!-- Make an Offer Popup / End -->*/}
                 {/*// <!-- Spacer -->*/}
                 <div className="margin-top-15"/>
                 {/*// <!-- Spacer / End-->*/}

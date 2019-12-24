@@ -4599,7 +4599,7 @@ span.blog-item-tag {
   flex-direction: column;
   justify-content: center;
   margin: 0 30px 30px 0;
-  width: calc(100% * (1 / 2)- 30px);
+  width: calc(100% * (1 / 2)- 15px);
   border-radius: 4px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
   background-color: #fff;

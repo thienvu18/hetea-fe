@@ -44,14 +44,23 @@ export const getCurrentUserRequest = token => {
     return getCurrentUser(token).then(user => {
       console.log("user", user);
       getCurrentTutor(user.data.id, token).then(tutor => {
-        // console.log("tutor",tutor);
+        console.log("tutor",tutor);
         dispatch(getCurrentUserAction(user, tutor));
       });
     });
   };
 };
 
-function getAllTutors(token) {
+function getAllTutors() {
+  const res = axios({
+    method: "GET",
+    url: "https://hetea.herokuapp.com/tutors"
+  }).catch(err => {
+    return err;
+  });
+  return res;
+}
+function getAllUsers(token) {
   const res = axios({
     method: "GET",
     url: "https://hetea.herokuapp.com/users",
@@ -63,31 +72,35 @@ function getAllTutors(token) {
   });
   return res;
 }
-export const getAllTutorsAction = res => {
+export const getAllTutorsAction = (users, tutors) => {
   return {
     type: userConstants.GET_ALL,
     payload: {
-      res
+      users,
+      tutors
     }
   };
 };
 
 export const getAllTutorsRequest = token => {
   return dispatch => {
-    return getAllTutors(token).then(res => {
-      console.log(res);
-      dispatch(getAllTutorsAction(res));
+    return getAllUsers(token).then(users => {
+      console.log("list users",users);
+      getAllTutors().then(tutors => {
+        console.log("list tutors",tutors);
+        dispatch(getAllTutorsAction(users, tutors));
+      });
     });
   };
 };
 
-function updatePassword(id, email, newPassword) {
-  const hash = btoa(`${email}:${newPassword}`);
+function updatePassword(id, email, currentPassword, newPassword) {
+  const hash = btoa(`${email}:${currentPassword}`);
   const res = axios({
     method: "PUT",
     url: `https://hetea.herokuapp.com/users/${id}/password`,
     headers: {
-      Authorization: `Bearer ${hash}`
+      Authorization: `Basic ${hash}`
     },
     data: {
       password: newPassword
@@ -109,11 +122,12 @@ export const updatePasswordAction = res => {
 export const updatePasswordRequest = (
   id,
   email,
+  currentPassword,
   newPassword
 ) => {
   return dispatch => {
-    return updatePassword(id, email, newPassword).then(res => {
-      console.log("update password",res);
+    return updatePassword(id, email, currentPassword, newPassword).then(res => {
+      console.log("update password", res);
       dispatch(updatePasswordAction(res));
     });
   };
@@ -140,7 +154,7 @@ const updateTutor = async (
   bio,
   skills,
   pricePerHour,
-  tagline,
+  tagline
 ) => {
   const res = axios({
     method: "PUT",
@@ -193,7 +207,7 @@ export const updateUserRequest = (
           bio,
           skills,
           pricePerHour,
-          tagLine,
+          tagLine
         ).then(tutor => {
           console.log("update tutor", tutor);
           dispatch(updateUserAction(user));

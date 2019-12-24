@@ -1,5 +1,4 @@
 import userConstants from "../constants/UserConstants";
-import data from "../data";
 
 const initState = {
   currentUser: {
@@ -15,17 +14,57 @@ const initState = {
     skills: [],
     pricePerHour: 0
   },
-  listTutors: data,
+  listTutors: {
+    tutors: [],
+    all: function() {
+      return this.tutors;
+    },
+    get: function(id) {
+      const isPlayer = p => p.number === id;
+      return this.tutors.find(isPlayer);
+    }
+  },
   generate: []
 };
 const doFilter = (tutors, filters) => {
+  // if (filters.Location === "") {
+  //   return tutors.filter(tutor => {
+  //     return (
+  //       tutor.pricePerHour >= filters.HourRate[0] &&
+  //       tutor.pricePerHour <= filters.HourRate[1]
+  //     );
+  //   });
+  // }
+
   return tutors.filter(tutor => {
     return (
-      tutor.location === filters.Location &&
-      tutor.hourlyRated >= filters.HourRate[0] &&
-      tutor.hourlyRated <= filters.HourRate[1]
+      tutor.address === filters.Location ||
+      (tutor.pricePerHour >= filters.HourRate[0] &&
+        tutor.pricePerHour <= filters.HourRate[1])
     );
   });
+};
+const mergeArrray = (users, tutors) => {
+  let user = [];
+  for (let i = 0; i < users.length; i = i + 1) {
+    for (let j = 0; j < tutors.length; j = j + 1) {
+      if (users[i].id === tutors[j].user_id) {
+        user.push({
+          number: users[i].id,
+          name: users[i].name,
+          email: users[i].email,
+          picture: users[i].picture,
+          address: tutors[j].address,
+          bio: tutors[j].bio,
+          skills: tutors[j].skills,
+          pricePerHour: tutors[j].pricePerHour,
+          tagline: tutors[j].tagline,
+          taughtContract: tutors[j].taughtContract
+        });
+      }
+    }
+  }
+  return user;
 };
 const UserReducer = (state = initState, action) => {
   switch (action.type) {
@@ -44,7 +83,6 @@ const UserReducer = (state = initState, action) => {
         tmp.currentUser.bio = tutor.bio;
         tmp.currentUser.tagLine = tutor.tagline;
         tmp.currentUser.skills = tutor.skills.slice();
-        console.log("tmp.currentUser.skills", tmp.currentUser.skills);
         tmp.currentUser.pricePerHour = tutor.pricePerHour;
         tmp.currentUser.idTutor = tutor.id;
       } catch (e) {
@@ -60,25 +98,24 @@ const UserReducer = (state = initState, action) => {
         tmp.currentUser.pricePerHour = 0;
       }
       return tmp;
-    case userConstants.GET_ALL:
-      const st = { ...state };
+    case userConstants.GET_ALL: {
       console.log("get all tutors");
       try {
-        const list = action.payload.res.data;
-        if (list) {
-          for (let i = 0; i < list.length; i += 1) {
-            st.listTutors.tutors.push({
-              number: list[1].id,
-              name: list[1].name,
-              avatar: list[1].picture,
-              email: list[1].email
-            });
-          }
-        }
-        st.generate = data.tutors.slice();
-        console.log("st.generate", st.generate);
+        const _listUsers = action.payload.users.data;
+        const _listTutors = action.payload.tutors.data.rows;
+
+        console.log("list", [_listUsers, _listTutors]);
+        const tutors = mergeArrray(_listUsers, _listTutors);
+
+        state.generate = tutors;
+
+        console.log("st.generate", state.generate);
+        const listTutors = { ...state.listTutors, tutors };
+        return { ...state, listTutors };
       } catch (e) {}
-      return st;
+
+      return { ...state };
+    }
     case userConstants.UPDATE_USER:
       return { ...state };
     case userConstants.UPDATE_PASSWORD:

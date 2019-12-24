@@ -14,6 +14,13 @@ class FullListTutors extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const token = localStorage.getItem("user");
+
+    this.props.fetchTutors(token);
+
+  }
+
   filter = () => {
     console.log(this.filters);
     return this.props.filters(this.filters);
@@ -21,8 +28,6 @@ class FullListTutors extends React.Component {
 
   render() {
     const state = this.props;
-    const token = localStorage.getItem("user");
-    state.fetchTutors(token);
     console.log(state.listTutors);
     return (
       <div>
@@ -151,11 +156,11 @@ class FullListTutors extends React.Component {
                 {state.listTutors.all().map(p => (
                   <TutorCard
                     key={p.number}
-                    avatar={p.avatar}
+                    avatar={p.picture}
                     name={p.name}
-                    job={"UX/UI Design"}
-                    location={"London"}
-                    rate={"$60 / hr"}
+                    job={p.tagline}
+                    location={p.address}
+                    rate={`$${p.pricePerHour} / hr`}
                     jobSuccess={"95%"}
                     linkProfile={`/tutors/${p.number}`}
                   />

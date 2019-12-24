@@ -100,7 +100,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <Link to="/index-logged-out">
-                    <i className="icon-material-outline-power-settings-new" />{" "}
+                    <i className="icon-material-outline-power-settings-new" />
                     Logout
                   </Link>
                 </li>

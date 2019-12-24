@@ -1,12 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  getCurrentUserRequest, updatePasswordRequest,
+  getCurrentUserRequest,
+  updatePasswordRequest,
   updateUserRequest
 } from "../actions/UserActions";
 import { Redirect } from "react-router-dom";
 import RangeSlider from "../components/Slider";
 import SkillTag from "../components/SkillTag";
+import ContractForm from "../components/ContractForm";
 
 class AccountSettings extends React.Component {
   constructor(props) {
@@ -16,14 +18,22 @@ class AccountSettings extends React.Component {
     };
     this.name = "";
     this.email = "";
+    this.CurrentPassword = "";
     this.NewPassword = "";
-    this.ConfirmtPassword = "";
+    this.ConfirmPassword = "";
     this.hourlyRate = 0;
     this.avatar = "";
     this.skill = "";
     this.address = "";
     this.bio = "";
     this.tagLine = "";
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.skillsArray !== this.props.skills) {
+      this.setState({
+        skillsArray: this.props.skills
+      });
+    }
   }
 
   removeSkills = value => {
@@ -46,28 +56,55 @@ class AccountSettings extends React.Component {
     });
   };
 
-  saveChanges=  (token)=>{
-    const state=this.props;
-    const {skillsArray}=this.state;
-    if (this.NewPassword === this.ConfirmtPassword)
-    {
+  saveChanges = token => {
+    const state = this.props;
+    const { skillsArray } = this.state;
+
+    if (
+      this.CurrentPassword === "" &&
+      this.NewPassword === "" &&
+      this.ConfirmPassword === ""
+    ) {
       state.updateUser(
-          state.idTutor,
-          state.id,
-          this.name,
-          state.avatar,
-          state.accountType,
-          this.address,
-          this.bio,
-          skillsArray,
-          this.hourlyRate,
-          this.tagLine,
-          token
+        state.idTutor,
+        state.id,
+        this.name,
+        state.avatar,
+        state.accountType,
+        this.address,
+        this.bio,
+        skillsArray,
+        this.hourlyRate,
+        this.tagLine,
+        token
       );
-      state.updatePassword(state.id,state.email,this.NewPassword);
+      return alert( "Update information successful!");
+    } else if (this.CurrentPassword === "")
+      return alert("Please enter your password!");
+    else if (this.NewPassword === this.ConfirmPassword) {
+      state.updateUser(
+        state.idTutor,
+        state.id,
+        this.name,
+        state.avatar,
+        state.accountType,
+        this.address,
+        this.bio,
+        skillsArray,
+        this.hourlyRate,
+        this.tagLine,
+        token
+      );
+      state.updatePassword(
+        state.id,
+        state.email,
+        this.CurrentPassword,
+        this.NewPassword
+      );
       return alert("update successful");
+    } else {
+      return alert("password not match");
     }
-    return alert("password not match");
   };
 
   render() {
@@ -356,6 +393,19 @@ class AccountSettings extends React.Component {
                     <div className="row">
                       <div className="col-xl-4">
                         <div className="submit-field">
+                          <h5>Current Password</h5>
+                          <input
+                            type="password"
+                            className="with-border"
+                            onChange={event =>
+                              (this.CurrentPassword = event.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xl-4">
+                        <div className="submit-field">
                           <h5>New Password</h5>
                           <input
                             type="password"
@@ -374,7 +424,7 @@ class AccountSettings extends React.Component {
                             type="password"
                             className="with-border"
                             onChange={event =>
-                              (this.ConfirmtPassword = event.target.value)
+                              (this.ConfirmPassword = event.target.value)
                             }
                           />
                         </div>
@@ -412,7 +462,7 @@ class AccountSettings extends React.Component {
                     //   this.tagLine,
                     //   token
                     // ]);
-                    this.saveChanges(token)
+                    this.saveChanges(token);
                   }}
                 >
                   Save Changes
@@ -424,7 +474,6 @@ class AccountSettings extends React.Component {
           {/*// <!-- Spacer -->*/}
           <div class="margin-top-70" />
           {/*// <!-- Spacer / End-->*/}
-
         </div>
 
         {/*// <!-- Dashboard Content / End -->*/}
@@ -485,8 +534,8 @@ const mapDispatchToProps = dispatch => {
         )
       );
     },
-    updatePassword: (id,email,newPass)=>{
-      dispatch(updatePasswordRequest(id,email,newPass));
+    updatePassword: (id, email, currentPass, newPass) => {
+      dispatch(updatePasswordRequest(id, email, currentPass, newPass));
     }
   };
 };

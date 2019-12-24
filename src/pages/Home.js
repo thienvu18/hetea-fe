@@ -5,7 +5,7 @@ import TutorHome from "./TutorHome";
 import { Link } from "react-router-dom";
 import banner from "../images/home-background.jpg";
 import TutorCard from "../components/TutorCard";
-import {getCurrentUserRequest} from "../actions/UserActions";
+import {getAllTutorsRequest, getCurrentUserRequest} from "../actions/UserActions";
 
 class Home extends React.Component {
   render() {
@@ -14,7 +14,11 @@ class Home extends React.Component {
     if (state.isLogin) {
       const token = localStorage.getItem("user");
       state.fetchCurrentUser(token);
+      state.fetchTutors(token);
     }
+
+    console.log(state.listTutors);
+
     return (
       <div>
         {/*//                 <!-- Intro Banner*/}
@@ -199,11 +203,11 @@ class Home extends React.Component {
                   {state.listTutors.all().map(p => (
                     <TutorCard
                       key={p.number}
-                      avatar={p.avatar}
+                      avatar={p.picture}
                       name={p.name}
-                      job={"UX/UI Design"}
-                      location={"London"}
-                      rate={"$60 / hr"}
+                      job={p.tagline}
+                      location={p.address}
+                      rate={`$${p.pricePerHour}/ hr`}
                       jobSuccess={"95%"}
                       linkProfile={`/tutors/${p.number}`}
                     />
@@ -230,7 +234,10 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchCurrentUser: token => {
       dispatch(getCurrentUserRequest(token));
-    }
+    },
+    fetchTutors: token => {
+      dispatch(getAllTutorsRequest(token));
+    },
   };
 };
 

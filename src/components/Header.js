@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../images/hetea.png";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import RightSideMenuLogout from "./RightSideMenuLogout";
 import RightSideMenuLogin from "./RightSideMenuLogin";
 import { connect } from "react-redux";
@@ -8,6 +8,13 @@ import { logout } from "../actions/AuthenticationActions";
 import {getCurrentUserRequest} from "../actions/UserActions";
 
 class Header extends React.Component {
+
+  doLogout=()=>{
+    const state=this.props;
+    state.logout();
+    return <Redirect to="/"/>
+  };
+
   render() {
     const state = this.props;
     if (state.isLogin) {
@@ -22,7 +29,7 @@ class Header extends React.Component {
             avatar={state.avatar}
             name={state.username}
             role={state.accountType}
-            logout={() => state.logout()}
+            logout={() => this.doLogout()}
           />
         );
       }
