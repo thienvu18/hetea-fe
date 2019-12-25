@@ -1,45 +1,62 @@
 import userConstants from "../constants/UserConstants";
 
 const initState = {
-    token: "",
-    isLogin: false,
-    isRegister: false,
-    msgErr: "",
-    accountType:"",
-
+  token: "",
+  isLogin: false,
+  isRegister: false,
+  msgErr: "",
 };
 
 const AuthenticationReducer = (state = initState, action) => {
-    switch (action.type) {
-        case userConstants.REGISTER:
-            return { ...state };
+  if (localStorage.getItem("user")) {
+    state.isLogin = true;
+  }
+  switch (action.type) {
+    case userConstants.REGISTER:
+      console.log("register");
+      const registerState = { ...state };
 
-        case userConstants.LOGIN:
+      try {
+        if (action.payload.res.request.status === 201) {
+          registerState.isRegister = true;
+        }
+        if (action.payload.res.request.status === 409) {
+          registerState.msgErr = "Email already registered";
+        }
+      } catch (e) {}
 
-            console.log("login");
-            const tmp = { ...state };
-            console.log(action.payload.res.data.token);
+      return registerState;
 
-            try {
-                const { token } = action.payload.res.data;
-                tmp.isLogin = true;
-                tmp.msgErr = '';
-                tmp.token=token;
-                tmp.accountType="student";
-            }catch (e) {
-                tmp.isLogin = false;
-                tmp.msgErr = '';
-                tmp.token='';
-                tmp.accountType='';
-            }
-            return tmp;
+    case userConstants.LOGIN:
+      console.log("login");
+      const tmp = { ...state };
 
-        case userConstants.LOGOUT:
-            return { ...state };
-
-        default:
-            return { ...state };
-    }
+      try {
+        tmp.token = action.payload.res.data.token;
+        tmp.msgErr = "";
+        tmp.isLogin = true;
+        localStorage.setItem("user", tmp.token);
+      } catch (e) {
+        if (action.payload.res.request.status === 401) {
+          tmp.msgErr = "Something went wrong";
+        }
+        if (action.payload.res.request.status === 400) {
+          tmp.msgErr = "Invalid email or password";
+        } else {
+          tmp.isLogin = false;
+          tmp.msgErr = "";
+          tmp.token = "";
+        }
+      }
+      return tmp;
+    case userConstants.REFRESH:
+      return initState;
+    case userConstants.LOGOUT:
+      localStorage.removeItem("user");
+      return initState;
+    default:
+      return { ...state };
+  }
 };
 
 export default AuthenticationReducer;
