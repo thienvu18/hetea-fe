@@ -42,11 +42,16 @@ export const getCurrentUserAction = (user, tutor) => {
 export const getCurrentUserRequest = token => {
   return dispatch => {
     return getCurrentUser(token).then(user => {
+
       console.log("user", user);
-      getCurrentTutor(user.data.id, token).then(tutor => {
-        console.log("tutor",tutor);
-        dispatch(getCurrentUserAction(user, tutor));
-      });
+      if(user.data.type==="tutor"){
+        getCurrentTutor(user.data.id, token).then(tutor => {
+          console.log("tutor", tutor);
+          dispatch(getCurrentUserAction(user, tutor));
+        });
+      }
+
+      dispatch(getCurrentUserAction(user));
     });
   };
 };
@@ -54,18 +59,21 @@ export const getCurrentUserRequest = token => {
 function getAllTutors() {
   const res = axios({
     method: "GET",
-    url: "https://hetea.herokuapp.com/tutors"
+    url: "https://hetea.herokuapp.com/tutors",
+    headers: {
+      Authorization: "Bearer x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL"
+    }
   }).catch(err => {
     return err;
   });
   return res;
 }
-function getAllUsers(token) {
+function getAllUsers() {
   const res = axios({
     method: "GET",
     url: "https://hetea.herokuapp.com/users",
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: "Bearer x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL"
     }
   }).catch(err => {
     return err;
@@ -82,12 +90,12 @@ export const getAllTutorsAction = (users, tutors) => {
   };
 };
 
-export const getAllTutorsRequest = token => {
+export const getAllTutorsRequest = () => {
   return dispatch => {
-    return getAllUsers(token).then(users => {
-      console.log("list users",users);
+    return getAllUsers().then(users => {
+      console.log("list users", users);
       getAllTutors().then(tutors => {
-        console.log("list tutors",tutors);
+        console.log("list tutors", tutors);
         dispatch(getAllTutorsAction(users, tutors));
       });
     });

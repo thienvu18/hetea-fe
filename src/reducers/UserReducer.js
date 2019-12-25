@@ -68,23 +68,28 @@ const mergeArrray = (users, tutors) => {
 };
 const UserReducer = (state = initState, action) => {
   switch (action.type) {
-    case userConstants.GET_CURRENT_USER:
+    case userConstants.GET_CURRENT_USER: {
       const tmp = { ...state };
       try {
         console.log("get user");
         const user = action.payload.user.data;
-        const tutor = action.payload.tutor.data;
+
         tmp.currentUser.id = user.id;
         tmp.currentUser.avatar = user.picture;
         tmp.currentUser.name = user.name;
         tmp.currentUser.accountType = user.type;
         tmp.currentUser.email = user.email;
-        tmp.currentUser.address = tutor.address;
-        tmp.currentUser.bio = tutor.bio;
-        tmp.currentUser.tagLine = tutor.tagline;
-        tmp.currentUser.skills = tutor.skills.slice();
-        tmp.currentUser.pricePerHour = tutor.pricePerHour;
-        tmp.currentUser.idTutor = tutor.id;
+
+        console.log("tmp", tmp);
+        if (tmp.currentUser.accountType === "tutor") {
+          const tutor = action.payload.tutor.data;
+          tmp.currentUser.address = tutor.address;
+          tmp.currentUser.bio = tutor.bio;
+          tmp.currentUser.tagLine = tutor.tagline;
+          tmp.currentUser.skills = tutor.skills.slice();
+          tmp.currentUser.pricePerHour = tutor.pricePerHour;
+          tmp.currentUser.idTutor = tutor.id;
+        }
       } catch (e) {
         tmp.currentUser.id = "";
         tmp.currentUser.avatar = "";
@@ -97,7 +102,9 @@ const UserReducer = (state = initState, action) => {
         tmp.currentUser.skills = [];
         tmp.currentUser.pricePerHour = 0;
       }
+
       return tmp;
+    }
     case userConstants.GET_ALL: {
       console.log("get all tutors");
       try {

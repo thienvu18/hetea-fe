@@ -7,7 +7,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Typography, Grid } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import ArrowForwardOutlinedIcon from "@material-ui/icons/ArrowForwardOutlined";
 import RangeSlider from "./Slider";
 
 const useStyles = makeStyles({
@@ -98,7 +97,8 @@ const useStyles = makeStyles({
     position: "relative",
     zIndex: 10,
     display: "inline-block",
-    width: "100%"
+    width: "100%",
+    backgroundColor: "rgb(242, 242, 242)"
   },
   close: {
     borderRadius: "0 4px 0 0",
@@ -129,7 +129,10 @@ const ContractForm = props => {
 
   return (
     <div>
-      <Button className={classes.button} onClick={handleOpen}>
+      <Button
+        className={classes.button}
+        onClick={handleOpen}
+      >
         Make an offer
         <i className="icon-material-outline-arrow-right-alt" />
       </Button>
@@ -166,72 +169,78 @@ const ContractForm = props => {
             Discuss your project with {name}
           </Typography>
           <DialogContentText id="alert-dialog-description">
-            <div className="input-with-icon-left">
-              <i className="icon-material-outline-account-circle" />
-              <input
-                type="text"
-                className="input-text with-border"
-                name="name"
-                id="name"
-                placeholder="Your name"
-              />
+            {/*// <!-- Dashboard Box -->*/}
+            <div className="col-xl-12">
+              <div className="dashboard-box margin-top-30">
+                {/*// <!-- Headline -->*/}
+                <div className="headline">
+                  <h3>
+                    <i className="icon-material-outline-account-circle" />
+                    Dealing
+                  </h3>
+                </div>
+
+                <div className="content with-padding padding-bottom-0">
+                  <div className="row ">
+                    <div className="col">
+                      <div className="row">
+                        <div className="col-xl-6">
+                          <div className="submit-field">
+                            <h5>Hour/ Day</h5>
+                            <RangeSlider
+                              value={4}
+                              max={12}
+                              // handleChange={newValue => {
+                              //   this.filters.HourRate = newValue;
+                              // }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-xl-6">
+                          <div className="submit-field">
+                            <h5>Month</h5>
+                            <RangeSlider
+                              value={4}
+                              max={12}
+                              // handleChange={newValue => {
+                              //   this.filters.HourRate = newValue;
+                              // }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="input-with-icon-left">
-              <i className="icon-material-baseline-mail-outline" />
-              <input
-                type="text"
-                className="input-text with-border"
-                name="email"
-                id="email"
-                placeholder="Email Address"
-              />
+            {/*// <!-- Dashboard Box -->*/}
+            <div className="col-xl-12">
+              <div className="dashboard-box margin-top-30">
+                {/*// <!-- Headline -->*/}
+                <div className="headline">
+                  <h3>
+                    <i className="icon-material-outline-account-circle" /> Notes
+                  </h3>
+                </div>
 
-              <Grid
-                container
-                direction="row"
-                justify="space-between"
-                alignItems="center"
-                className={classes.input}
-              >
-                <Typography
-                  variant="h5"
-                  className={classes.titleForm}
-                >{`0 hr/ day`}</Typography>
-                <RangeSlider
-                  value={4}
-                  max={12}
-                  // handleChange={newValue => {
-                  //   this.filters.HourRate = newValue;
-                  // }}
-                />
-              </Grid>
-              <Grid
-                container
-                direction="row"
-                justify="space-between"
-                alignItems="center"
-                className={classes.input}
-              >
-                <Typography
-                  variant="h5"
-                  className={classes.titleForm}
-                >{`0 month`}</Typography>
-                <RangeSlider
-                  value={4}
-                  max={12}
-                  // handleChange={newValue => {
-                  //   this.filters.HourRate = newValue;
-                  // }}
-                />
-              </Grid>
-
-              <textarea
-                name="textarea"
-                cols="10"
-                placeholder="Message"
-                className="with-border"
-              />
+                <div className="content with-padding padding-bottom-0">
+                  <div className="row ">
+                    <div className="col">
+                      <div className="row">
+                        <textarea
+                          name="textarea"
+                          cols="10"
+                          placeholder="Message"
+                          className="with-border"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </DialogContentText>
         </DialogContent>

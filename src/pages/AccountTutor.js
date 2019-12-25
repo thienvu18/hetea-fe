@@ -8,9 +8,8 @@ import {
 import { Redirect } from "react-router-dom";
 import RangeSlider from "../components/Slider";
 import SkillTag from "../components/SkillTag";
-import ContractForm from "../components/ContractForm";
 
-class AccountSettings extends React.Component {
+class AccountTutor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,7 +77,8 @@ class AccountSettings extends React.Component {
         this.tagLine,
         token
       );
-      return alert( "Update information successful!");
+
+      return alert("Update information successful");
     } else if (this.CurrentPassword === "")
       return alert("Please enter your password!");
     else if (this.NewPassword === this.ConfirmPassword) {
@@ -284,7 +284,6 @@ class AccountSettings extends React.Component {
                                   value={state.pricePerHour}
                                   handleChange={newValue => {
                                     this.hourlyRate = newValue;
-                                    // console.log("hourlyRate", this.hourlyRate);
                                   }}
                                 />
                               </div>
@@ -543,4 +542,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AccountSettings);
+)(AccountTutor);

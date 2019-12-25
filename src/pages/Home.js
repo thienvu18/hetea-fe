@@ -1,23 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import StudentHome from "./StudentHome";
-import TutorHome from "./TutorHome";
 import { Link } from "react-router-dom";
 import banner from "../images/home-background.jpg";
 import TutorCard from "../components/TutorCard";
-import {getAllTutorsRequest, getCurrentUserRequest} from "../actions/UserActions";
+import {
+  getAllTutorsRequest,
+  getCurrentUserRequest
+} from "../actions/UserActions";
 
 class Home extends React.Component {
+  componentDidMount() {
+    this.props.fetchTutors();
+  }
+
   render() {
     const state = this.props;
     console.log(state);
-    if (state.isLogin) {
-      const token = localStorage.getItem("user");
-      state.fetchCurrentUser(token);
-      state.fetchTutors(token);
-    }
 
-    console.log(state.listTutors);
+    console.log("list home", state.listTutors);
 
     return (
       <div>
@@ -232,12 +232,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchCurrentUser: token => {
-      dispatch(getCurrentUserRequest(token));
-    },
-    fetchTutors: token => {
-      dispatch(getAllTutorsRequest(token));
-    },
+    fetchTutors: () => {
+      dispatch(getAllTutorsRequest());
+    }
   };
 };
 

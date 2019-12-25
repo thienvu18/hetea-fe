@@ -1,22 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../images/user-avatar-small-03.jpg";
+import Avatar from "@material-ui/core/Avatar";
 
-const Message = () => {
-    return (
-        <div>
-            <li className="notifications-not-read">
-                <Link to="/dashboard-messages">
-                    <span className="notification-avatar status-online"><img src={logo} alt="avatar"/></span>
-                    <div className="notification-text">
-                        <strong>David Peterson</strong>
-                        <p className="notification-msg-text">Thanks for reaching out. I'm quite busy right now on
-                            many...</p>
-                        <span className="color">4 hours ago</span>
-                    </div>
-                </Link>
-            </li>
+const MessageComponent = props => {
+  const { avatar, message, me } = props;
+  return (
+    <div>
+      <div className={me ? "message-bubble me" : "message-bubble"}>
+        <div className="message-bubble-inner">
+          <div className="message-avatar">
+            <Avatar src={avatar} alt="Avatar" />
+          </div>
+          <div className="message-text">
+            <p>{message}</p>
+          </div>
         </div>
-    );
+        <div className="clearfix" />
+      </div>
+    </div>
+  );
 };
-export default Message;
+export default MessageComponent;

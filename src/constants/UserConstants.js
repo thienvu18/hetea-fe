@@ -7,7 +7,8 @@ const userConstants = {
   GET_ALL: "GET_ALL",
   UPDATE_PASSWORD: "UPDATE_PASSWORD",
   UPDATE_USER: "UPDATE_USER",
-  FILTER: "FILTER"
+  FILTER: "FILTER",
+  FORGOT_PASSWORD: "FORGOT_PASSWORD"
 };
 
 export default userConstants;

@@ -15,9 +15,7 @@ class FullListTutors extends React.Component {
   }
 
   componentDidMount() {
-    const token = localStorage.getItem("user");
-
-    this.props.fetchTutors(token);
+    this.props.fetchTutors();
 
   }
 
@@ -228,8 +226,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchTutors: token => {
-      dispatch(getAllTutorsRequest(token));
+    fetchTutors: () => {
+      dispatch(getAllTutorsRequest());
     },
       filters: (filter)=>{
         dispatch(filterAction(filter));

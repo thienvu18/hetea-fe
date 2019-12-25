@@ -12,7 +12,8 @@ import Register from "./pages/Register";
 import TutorDetail from "./pages/TutorDetail";
 import FullListTutors from "./pages/FullListTutor";
 import TutorHome from "./pages/TutorHome";
-import AccountSettings from "./pages/AccountSettings";
+import AccountSettings from "./pages/AccountTutor";
+import StudentHome from "./pages/StudentHome";
 
 function App() {
   return (
@@ -21,8 +22,10 @@ function App() {
         <Header />
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/tutor/:number" component={TutorHome} />
+          <Route exact path="/student/:number" component={StudentHome} />
           <Route exact path="/tutors" component={FullListTutors} />
-          <Route exact path="/dashboard" component={AccountSettings} />
+          <Route exact path="/dashboard" component={TutorHome} />
           <Route path="/tutors/:number" component={TutorDetail} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

@@ -138,3 +138,11 @@ export const logout = () => {
     type: userConstants.LOGOUT
   };
 };
+
+export const fogotPasswordAction = () =>{
+  return {
+    type: userConstants.FORGOT_PASSWORD,
+    payload: {
+    }
+  };
+};

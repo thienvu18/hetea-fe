@@ -9,27 +9,27 @@ import {getCurrentUserRequest} from "../actions/UserActions";
 
 class Header extends React.Component {
 
-  doLogout=()=>{
-    const state=this.props;
-    state.logout();
-    return <Redirect to="/"/>
-  };
+  componentDidMount() {
+    console.log("abc");
+    if(this.props.isLogin){
+      const token = localStorage.getItem("user");
+      this.props.fetchCurrentUser(token);
+    }
+  }
+
 
   render() {
     const state = this.props;
-    if (state.isLogin) {
-      const token = localStorage.getItem("user");
-      state.fetchCurrentUser(token);
-    }
+
 
     const renderRightSide = () => {
       if (state.isLogin) {
         return (
           <RightSideMenuLogin
             avatar={state.avatar}
-            name={state.username}
+            name={state.name}
             role={state.accountType}
-            logout={() => this.doLogout()}
+            logout={() => state.logout()}
           />
         );
       }
