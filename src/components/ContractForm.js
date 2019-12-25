@@ -116,7 +116,7 @@ const useStyles = makeStyles({
 });
 const ContractForm = props => {
   const classes = useStyles();
-  const { value, name } = props;
+  const { hourInDay, name, days, makeOffer } = props;
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -129,10 +129,7 @@ const ContractForm = props => {
 
   return (
     <div>
-      <Button
-        className={classes.button}
-        onClick={handleOpen}
-      >
+      <Button className={classes.button} onClick={handleOpen}>
         Make an offer
         <i className="icon-material-outline-arrow-right-alt" />
       </Button>
@@ -190,22 +187,18 @@ const ContractForm = props => {
                             <RangeSlider
                               value={4}
                               max={12}
-                              // handleChange={newValue => {
-                              //   this.filters.HourRate = newValue;
-                              // }}
+                              handleChange={hourInDay}
                             />
                           </div>
                         </div>
 
                         <div className="col-xl-6">
                           <div className="submit-field">
-                            <h5>Month</h5>
+                            <h5>Days</h5>
                             <RangeSlider
-                              value={4}
-                              max={12}
-                              // handleChange={newValue => {
-                              //   this.filters.HourRate = newValue;
-                              // }}
+                              value={7}
+                              max={30}
+                              handleChange={days}
                             />
                           </div>
                         </div>
@@ -222,7 +215,7 @@ const ContractForm = props => {
                 {/*// <!-- Headline -->*/}
                 <div className="headline">
                   <h3>
-                    <i className="icon-material-outline-account-circle" /> Notes
+                    <i className="icon-material-outline-note-add" /> Notes
                   </h3>
                 </div>
 
@@ -248,6 +241,7 @@ const ContractForm = props => {
           <button
             className="button full-width button-sliding-icon ripple-effect"
             form="make-an-offer-form"
+            onClick={() => makeOffer()}
           >
             Make an Offer{" "}
             <i className="icon-material-outline-arrow-right-alt" />

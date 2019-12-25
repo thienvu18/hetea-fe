@@ -1,16 +1,14 @@
 import React from "react";
 import banner from "../images/single-freelancer.jpg";
-import data from "../data";
-import { filterAction, getAllTutorsRequest } from "../actions/UserActions";
 import { connect } from "react-redux";
-import SkillTag from "../components/SkillTag";
 import ContractForm from "../components/ContractForm";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Rating from "@material-ui/lab/Rating";
-import {Redirect}from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { createContractRequest } from "../actions/UserActions";
 
 const BorderLinearProgress = withStyles({
   root: {
@@ -23,17 +21,48 @@ const BorderLinearProgress = withStyles({
 })(LinearProgress);
 
 class TutorDetail extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      open: false
-    }
+    this.hourInDay = 4;
+    this.days = 7;
   }
 
+  doCreateContract = (token, tutor, tutee, price) => {
+    console.log("create contract");
+    console.log(token, tutor, tutee, price);
+
+    var today = new Date();
+    var startDate =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+
+    var theDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+    var endDate = new Date(theDate);
+    endDate.setDate(endDate.getDate() + this.days);
+
+    this.props.createContract(
+      token,
+      tutor,
+      tutee,
+      this.hourInDay,
+      price,
+      startDate,
+      endDate
+    );
+    return alert("Create contract successful");
+  };
 
   render() {
     const state = this.props;
     const tutor = state.listTutors.get(this.props.match.params.number);
+    const token = localStorage.getItem("user");
     if (!tutor) {
       return <div>Sorry, but the player was not found</div>;
     }
@@ -50,7 +79,7 @@ class TutorDetail extends React.Component {
                 <div className="single-page-header-inner">
                   <div className="left-side">
                     <div className="header-image freelancer-avatar">
-                      <img src={tutor.picture} alt="" />
+                      <img src={tutor.picture} alt="Avatar" />
                     </div>
                     <div className="header-details">
                       <h3>
@@ -217,7 +246,23 @@ class TutorDetail extends React.Component {
                   </div>
                 </div>
 
-                <ContractForm name={tutor.name} />
+                <ContractForm
+                  name={tutor.name}
+                  hourInDay={newValue => {
+                    this.hourInDay = newValue;
+                  }}
+                  days={newValue => {
+                    this.days = newValue;
+                  }}
+                  makeOffer={() =>
+                    this.doCreateContract(
+                      token,
+                      tutor.number,
+                      state.id,
+                      tutor.pricePerHour
+                    )
+                  }
+                />
 
                 {/*// <!-- Freelancer Indicators -->*/}
                 <div className="sidebar-widget">
@@ -324,11 +369,25 @@ const mapStateToProps = state => {
   return {
     listTutors: state.UserReducer.listTutors,
     isLogin: state.AuthenticationReducer.isLogin,
+    id: state.UserReducer.currentUser.id
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    createContract: (token, tutor, tutee, hours, price, startDate, endDate) => {
+      dispatch(
+        createContractRequest(
+          token,
+          tutor,
+          tutee,
+          hours,
+          price,
+          startDate,
+          endDate
+        )
+      );
+    }
     // fetchTutors: token => {
     //     dispatch(getAllTutorsRequest(token));
     // },

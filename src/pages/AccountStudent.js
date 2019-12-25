@@ -22,54 +22,46 @@ class AccountStudent extends React.Component {
   }
 
   saveChanges = token => {
-    // const state = this.props;
-    // const { skillsArray } = this.state;
-    //
-    // if (
-    //   this.CurrentPassword === "" &&
-    //   this.NewPassword === "" &&
-    //   this.ConfirmPassword === ""
-    // ) {
-    //   state.updateUser(
-    //     state.idTutor,
-    //     state.id,
-    //     this.name,
-    //     state.avatar,
-    //     state.accountType,
-    //     this.address,
-    //     this.bio,
-    //     skillsArray,
-    //     this.hourlyRate,
-    //     this.tagLine,
-    //     token
-    //   );
-    //   return alert("Update information successful!");
-    // } else if (this.CurrentPassword === "")
-    //   return alert("Please enter your password!");
-    // else if (this.NewPassword === this.ConfirmPassword) {
-    //   state.updateUser(
-    //     state.idTutor,
-    //     state.id,
-    //     this.name,
-    //     state.avatar,
-    //     state.accountType,
-    //     this.address,
-    //     this.bio,
-    //     skillsArray,
-    //     this.hourlyRate,
-    //     this.tagLine,
-    //     token
-    //   );
-    //   state.updatePassword(
-    //     state.id,
-    //     state.email,
-    //     this.CurrentPassword,
-    //     this.NewPassword
-    //   );
-    //   return alert("update successful");
-    // } else {
-    //   return alert("password not match");
-    // }
+    const state = this.props;
+    const { skillsArray } = this.state;
+
+    if (
+      this.CurrentPassword === "" &&
+      this.NewPassword === "" &&
+      this.ConfirmPassword === ""
+    ) {
+      state.updateUser(
+        state.idTutee,
+        state.id,
+        this.name,
+        state.avatar,
+        state.accountType,
+        this.address,
+        token
+      );
+      return alert("Update information successful!");
+    } else if (this.CurrentPassword === "")
+      return alert("Please enter your password!");
+    else if (this.NewPassword === this.ConfirmPassword) {
+      state.updateUser(
+        state.idTutee,
+        state.id,
+        this.name,
+        state.avatar,
+        state.accountType,
+        this.address,
+        token
+      );
+      state.updatePassword(
+        state.id,
+        state.email,
+        this.CurrentPassword,
+        this.NewPassword
+      );
+      return alert("update successful");
+    } else {
+      return alert("Password not match");
+    }
   };
 
   render() {
@@ -194,20 +186,19 @@ class AccountStudent extends React.Component {
                             </div>
                           </div>
 
-                            <div className="col-xl-6">
-                                <div className="submit-field">
-                                    <h5>Address</h5>
-                                    <input
-                                        type="text"
-                                        className="with-border"
-                                        defaultValue={state.address}
-                                        onChange={event =>
-                                            (this.address = event.target.value)
-                                        }
-                                    />
-                                </div>
+                          <div className="col-xl-6">
+                            <div className="submit-field">
+                              <h5>Address</h5>
+                              <input
+                                type="text"
+                                className="with-border"
+                                defaultValue={state.address}
+                                onChange={event =>
+                                  (this.address = event.target.value)
+                                }
+                              />
                             </div>
-
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -333,43 +324,35 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-        fetchCurrentUser: token => {
-            dispatch(getCurrentUserRequest(token));
-        },
-        // updateUser: (
-        //     id,
-        //     user_id,
-        //     name,
-        //     picture,
-        //     type,
-        //     address,
-        //     bio,
-        //     skills,
-        //     pricePerHour,
-        //     tagline,
-        //     token
-        // ) => {
-        //     dispatch(
-        //         updateUserRequest(
-        //             id,
-        //             user_id,
-        //             name,
-        //             picture,
-        //             type,
-        //             address,
-        //             bio,
-        //             skills,
-        //             pricePerHour,
-        //             tagline,
-        //             token
-        //         )
-        //     );
-        // },
-        // updatePassword: (id, email, currentPass, newPass) => {
-        //     dispatch(updatePasswordRequest(id, email, currentPass, newPass));
-        // }
-    };
+  return {
+    fetchCurrentUser: token => {
+      dispatch(getCurrentUserRequest(token));
+    },
+    updateUser: (
+        id,
+        user_id,
+        name,
+        picture,
+        type,
+        address,
+        token
+    ) => {
+        dispatch(
+            updateUserRequest(
+                id,
+                user_id,
+                name,
+                picture,
+                type,
+                address,
+                token
+            )
+        );
+    },
+    updatePassword: (id, email, currentPass, newPass) => {
+        dispatch(updatePasswordRequest(id, email, currentPass, newPass));
+    }
+  };
 };
 
 export default connect(

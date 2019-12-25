@@ -29,12 +29,28 @@ function getCurrentTutor(user_id, token) {
   return tutor;
 }
 
-export const getCurrentUserAction = (user, tutor) => {
+function getCurrentTutee(user_id, token) {
+  const tutee = axios({
+    method: "GET",
+    url: "https://hetea.herokuapp.com/tutees/me",
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    data: {
+      user_id: user_id
+    }
+  }).catch(err => {
+    return err;
+  });
+  return tutee;
+}
+
+export const getCurrentUserAction = (user, detail) => {
   return {
     type: userConstants.GET_CURRENT_USER,
     payload: {
       user,
-      tutor
+      detail
     }
   };
 };
@@ -42,14 +58,21 @@ export const getCurrentUserAction = (user, tutor) => {
 export const getCurrentUserRequest = token => {
   return dispatch => {
     return getCurrentUser(token).then(user => {
-
       console.log("user", user);
-      if(user.data.type==="tutor"){
-        getCurrentTutor(user.data.id, token).then(tutor => {
-          console.log("tutor", tutor);
-          dispatch(getCurrentUserAction(user, tutor));
-        });
-      }
+      try {
+        if (user.data.type === "tutor") {
+          getCurrentTutor(user.data.id, token).then(tutor => {
+            console.log("tutor", tutor);
+            dispatch(getCurrentUserAction(user, tutor));
+          });
+        }
+        // if (user.data.type === "tutee") {
+        //   getCurrentTutee(user.data.id, token).then(tutee => {
+        //     console.log("tutee", tutee);
+        //     dispatch(getCurrentUserAction(user, tutee));
+        //   });
+        // }
+      } catch (e) {}
 
       dispatch(getCurrentUserAction(user));
     });
@@ -93,9 +116,7 @@ export const getAllTutorsAction = (users, tutors) => {
 export const getAllTutorsRequest = () => {
   return dispatch => {
     return getAllUsers().then(users => {
-      console.log("list users", users);
       getAllTutors().then(tutors => {
-        console.log("list tutors", tutors);
         dispatch(getAllTutorsAction(users, tutors));
       });
     });
@@ -135,7 +156,6 @@ export const updatePasswordRequest = (
 ) => {
   return dispatch => {
     return updatePassword(id, email, currentPassword, newPassword).then(res => {
-      console.log("update password", res);
       dispatch(updatePasswordAction(res));
     });
   };
@@ -155,7 +175,7 @@ const updateUser = async (id, name, picture, token) => {
   });
   return res;
 };
-const updateTutor = async (
+const updateTutor = (
   id,
   user_id,
   address,
@@ -175,6 +195,21 @@ const updateTutor = async (
       skills: skills,
       pricePerHour: pricePerHour,
       tagline: tagline
+    }
+  }).catch(err => {
+    return err;
+  });
+  return res;
+};
+
+const updateTutee = (id, user_id, address) => {
+  const res = axios({
+    method: "PUT",
+    url: `https://hetea.herokuapp.com/tutees/${id}`,
+    data: {
+      access_token: "x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL",
+      user_id: user_id,
+      address: address
     }
   }).catch(err => {
     return err;
@@ -221,6 +256,12 @@ export const updateUserRequest = (
           dispatch(updateUserAction(user));
         });
       }
+      if (type === "tutee") {
+        updateTutee(id, user_id, address).then(tutee => {
+          console.log("update tutee", tutee);
+          dispatch(updateUserAction(user));
+        });
+      }
     });
   };
 };
@@ -231,5 +272,67 @@ export const filterAction = filters => {
     payload: {
       filters
     }
+  };
+};
+
+export const createContractAction = res => {
+  return {
+    type: userConstants.CREATE_CONTRACT,
+    payload: {
+      res
+    }
+  };
+};
+
+const createContract = (
+  token,
+  tutor,
+  tutee,
+  hours,
+  price,
+  startDate,
+  endDate
+) => {
+  const res = axios({
+    method: "POST",
+    url: `https://hetea.herokuapp.com/contracts`,
+    data: {
+      access_token: token,
+      token: token,
+      tutor: tutor,
+      tutee: tutee,
+      hours: hours,
+      price: price,
+      startDate: startDate,
+      endDate: endDate
+    }
+  }).catch(err => {
+    return err;
+  });
+  return res;
+};
+
+export const createContractRequest = (
+  token,
+  tutor,
+  tutee,
+  hours,
+  price,
+  startDate,
+  endDate
+) => {
+  return dispatch => {
+    return createContract(
+      token,
+      tutor,
+      tutee,
+      hours,
+      price,
+      startDate,
+      endDate
+    ).then(res => {
+      console.log("createContract", res);
+      dispatch(createContractAction(res));
+    });
   };
 };
