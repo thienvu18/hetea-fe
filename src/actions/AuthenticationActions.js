@@ -23,7 +23,7 @@ function doRegisterTutor(user_id) {
     url: "https://hetea.herokuapp.com/tutors",
     data: {
       access_token: "x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL",
-      user_id: user_id,
+      user_id: user_id
     }
   }).catch(err => {
     return err;
@@ -31,6 +31,19 @@ function doRegisterTutor(user_id) {
   return res;
 }
 
+function doRegisterStudent(user_id) {
+  const res = axios({
+    method: "POST",
+    url: "https://hetea.herokuapp.com/tutees",
+    data: {
+      access_token: "x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL",
+      user_id: user_id
+    }
+  }).catch(err => {
+    return err;
+  });
+  return res;
+}
 function doGoogleRegister(token) {
   const res = axios({
     method: "POST",
@@ -69,13 +82,17 @@ export const registerAction = res => {
 export const registerRequest = (email, password, type) => {
   return dispatch => {
     return doRegister(email, password, type).then(user => {
-      console.log(user.request.status);
-      if(user.request.status===201){
-        if(type==="tutor"){
+      console.log("register", user);
+      if (user.request.status === 201) {
+        if (type === "tutor") {
           doRegisterTutor(user.data.user.id);
+          dispatch(registerAction(user));
+        }
+        if (type === "tutee") {
+          doRegisterStudent(user.data.user.id);
+          dispatch(registerAction(user));
         }
       }
-      dispatch(registerAction(user));
     });
   };
 };
@@ -122,7 +139,7 @@ export const loginAction = res => {
 export const loginRequest = (email, password) => {
   return dispatch => {
     return login(email, password).then(res => {
-      console.log("login",res);
+      console.log("login", res);
       dispatch(loginAction(res));
     });
   };
@@ -136,5 +153,12 @@ export const clear = () => {
 export const logout = () => {
   return {
     type: userConstants.LOGOUT
+  };
+};
+
+export const fogotPasswordAction = () => {
+  return {
+    type: userConstants.FORGOT_PASSWORD,
+    payload: {}
   };
 };

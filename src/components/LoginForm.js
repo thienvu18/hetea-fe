@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import Button from "@material-ui/core/Button";
 
 const LoginForm = (props) => {
     const {
@@ -17,7 +18,7 @@ const LoginForm = (props) => {
             {/* <!--  Welcome text --> */}
             <div className="welcome-text">
                 <h3>We are glad to see you again!</h3>
-                <span>Do not have an account? {' '}
+                <span>Do not have an account?
 					<Link to="/register" onClick={()=>clear()}>
 						Sign Up!
 					</Link>
@@ -57,9 +58,9 @@ const LoginForm = (props) => {
                 </div>
                 <span style={{fontStyle: "italic", color: "red"}}>{error}</span>
 				<br/>
-                <a href="/#" className="forgot-password">
+                <Button  className="forgot-password">
                     Forgot Password?
-                </a>
+                </Button>
             </form>
 
             {/*<!-- Button -->*/}

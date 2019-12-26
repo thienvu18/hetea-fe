@@ -10,51 +10,16 @@ import RangeSlider from "../components/Slider";
 import SkillTag from "../components/SkillTag";
 import ContractForm from "../components/ContractForm";
 
-class AccountSettings extends React.Component {
+class AccountStudent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      skillsArray: this.props.skills
-    };
     this.name = "";
     this.email = "";
     this.CurrentPassword = "";
     this.NewPassword = "";
     this.ConfirmPassword = "";
-    this.hourlyRate = 0;
-    this.avatar = "";
-    this.skill = "";
     this.address = "";
-    this.bio = "";
-    this.tagLine = "";
   }
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.skillsArray !== this.props.skills) {
-      this.setState({
-        skillsArray: this.props.skills
-      });
-    }
-  }
-
-  removeSkills = value => {
-    const { skillsArray } = this.state;
-    const i = skillsArray.indexOf(value);
-    if (i !== -1) {
-      skillsArray.splice(i, 1);
-    }
-    this.setState({
-      skillsArray
-    });
-  };
-
-  addSkill = value => {
-    const { skillsArray } = this.state;
-
-    skillsArray.push(value);
-    this.setState({
-      skillsArray
-    });
-  };
 
   saveChanges = token => {
     const state = this.props;
@@ -66,33 +31,25 @@ class AccountSettings extends React.Component {
       this.ConfirmPassword === ""
     ) {
       state.updateUser(
-        state.idTutor,
+        state.idTutee,
         state.id,
         this.name,
         state.avatar,
         state.accountType,
         this.address,
-        this.bio,
-        skillsArray,
-        this.hourlyRate,
-        this.tagLine,
         token
       );
-      return alert( "Update information successful!");
+      return alert("Update information successful!");
     } else if (this.CurrentPassword === "")
       return alert("Please enter your password!");
     else if (this.NewPassword === this.ConfirmPassword) {
       state.updateUser(
-        state.idTutor,
+        state.idTutee,
         state.id,
         this.name,
         state.avatar,
         state.accountType,
         this.address,
-        this.bio,
-        skillsArray,
-        this.hourlyRate,
-        this.tagLine,
         token
       );
       state.updatePassword(
@@ -103,37 +60,21 @@ class AccountSettings extends React.Component {
       );
       return alert("update successful");
     } else {
-      return alert("password not match");
+      return alert("Password not match");
     }
   };
 
   render() {
     const state = this.props;
-    const { skillsArray } = this.state;
-
     this.name = state.name;
     this.email = state.email;
-    this.hourlyRate = state.pricePerHour;
     this.avatar = state.avatar;
     this.address = state.address;
-    this.bio = state.bio;
-    this.tagLine = state.tagLine;
 
     const token = localStorage.getItem("user");
     if (!token && state.isLogin === false) {
       return <Redirect to="/" />;
     }
-
-    const tag = skillsArray.map((skill, index) => {
-      return (
-        <SkillTag
-          key={index}
-          value={skill}
-          click={() => this.removeSkills(skill)}
-        />
-      );
-    });
-
     return (
       <>
         {/*//             <!-- Dashboard Content*/}
@@ -195,7 +136,7 @@ class AccountSettings extends React.Component {
 
                       <div className="col">
                         <div className="row">
-                          <div className="col-xl-4">
+                          <div className="col-xl-6">
                             <div className="submit-field">
                               <h5>Name</h5>
                               <input
@@ -209,7 +150,7 @@ class AccountSettings extends React.Component {
                             </div>
                           </div>
 
-                          <div className="col-xl-4">
+                          <div className="col-xl-6">
                             {/*// <!-- Account Type -->*/}
                             <div className="submit-field">
                               <h5>Account Type</h5>
@@ -226,119 +167,21 @@ class AccountSettings extends React.Component {
                                     form="freelancer-radio"
                                     className="ripple-effect-dark"
                                   >
-                                    <i className="icon-material-outline-account-circle" />{" "}
-                                    Tutor
+                                    <i className="icon-material-outline-account-circle" />
+                                    {state.accountType}
                                   </label>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className="col-xl-4">
+                          <div className="col-xl-6">
                             <div className="submit-field">
                               <h5>Email</h5>
                               <input
                                 type="text"
                                 className="with-border"
                                 value={state.email}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/*// <!-- Dashboard Box -->*/}
-              <div className="col-xl-12">
-                <div className="dashboard-box">
-                  {/*// <!-- Headline -->*/}
-                  <div className="headline">
-                    <h3>
-                      <i className="icon-material-outline-face" /> My Profile
-                    </h3>
-                  </div>
-
-                  <div className="content">
-                    <ul className="fields-ul">
-                      <li>
-                        <div className="row">
-                          <div className="col-xl-6">
-                            <div className="submit-field">
-                              <div className="bidding-widget">
-                                {/*// <!-- Headline -->*/}
-                                <span className="bidding-detail">
-                                  Set your <strong>minimal hourly rate</strong>
-                                </span>
-
-                                {/*// <!-- Slider -->*/}
-                                <div className="bidding-value margin-bottom-10">
-                                  $
-                                  <span id="biddingVal">
-                                    {state.pricePerHour}
-                                  </span>
-                                </div>
-                                <RangeSlider
-                                  value={state.pricePerHour}
-                                  handleChange={newValue => {
-                                    this.hourlyRate = newValue;
-                                    // console.log("hourlyRate", this.hourlyRate);
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-xl-6">
-                            <div className="submit-field">
-                              <h5>
-                                Skills
-                                <i
-                                  className="help-icon"
-                                  data-tippy-placement="right"
-                                  title="Add up to 10 skills"
-                                />
-                              </h5>
-
-                              {/*// <!-- Skills List -->*/}
-                              <div className="keywords-container">
-                                <div className="keyword-input-container">
-                                  <input
-                                    type="text"
-                                    className="keyword-input with-border"
-                                    placeholder="e.g. Angular, Laravel"
-                                    onChange={event => {
-                                      this.skill = event.target.value;
-                                    }}
-                                  />
-                                  <button
-                                    className="keyword-button"
-                                    onClick={() => this.addSkill(this.skill)}
-                                  >
-                                    <i className="icon-material-outline-add" />
-                                  </button>
-                                </div>
-                                <div className="keywords-list">{tag}</div>
-                                <div className="clearfix" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="row">
-                          <div className="col-xl-6">
-                            <div className="submit-field">
-                              <h5>Tagline</h5>
-                              <input
-                                type="text"
-                                className="with-border"
-                                defaultValue={state.tagLine}
-                                onChange={event => {
-                                  this.tagLine = event.target.value;
-                                }}
                               />
                             </div>
                           </div>
@@ -350,30 +193,15 @@ class AccountSettings extends React.Component {
                                 type="text"
                                 className="with-border"
                                 defaultValue={state.address}
-                                onChange={event => {
-                                  this.address = event.target.value;
-                                }}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-xl-12">
-                            <div className="submit-field">
-                              <h5>Introduce Yourself</h5>
-                              <textarea
-                                cols="30"
-                                rows="5"
-                                className="with-border"
-                                defaultValue={state.bio}
-                                onChange={event => {
-                                  this.bio = event.target.value;
-                                }}
+                                onChange={event =>
+                                  (this.address = event.target.value)
+                                }
                               />
                             </div>
                           </div>
                         </div>
-                      </li>
-                    </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -487,16 +315,11 @@ const mapStateToProps = state => {
     isLogin: state.AuthenticationReducer.isLogin,
     token: state.AuthenticationReducer.token,
     id: state.UserReducer.currentUser.id,
-    idTutor: state.UserReducer.currentUser.idTutor,
     avatar: state.UserReducer.currentUser.avatar,
     name: state.UserReducer.currentUser.name,
     accountType: state.UserReducer.currentUser.accountType,
     email: state.UserReducer.currentUser.email,
-    address: state.UserReducer.currentUser.address,
-    bio: state.UserReducer.currentUser.bio,
-    skills: state.UserReducer.currentUser.skills,
-    tagLine: state.UserReducer.currentUser.tagLine,
-    pricePerHour: state.UserReducer.currentUser.pricePerHour
+    address: state.UserReducer.currentUser.address
   };
 };
 
@@ -506,36 +329,28 @@ const mapDispatchToProps = dispatch => {
       dispatch(getCurrentUserRequest(token));
     },
     updateUser: (
-      id,
-      user_id,
-      name,
-      picture,
-      type,
-      address,
-      bio,
-      skills,
-      pricePerHour,
-      tagline,
-      token
+        id,
+        user_id,
+        name,
+        picture,
+        type,
+        address,
+        token
     ) => {
-      dispatch(
-        updateUserRequest(
-          id,
-          user_id,
-          name,
-          picture,
-          type,
-          address,
-          bio,
-          skills,
-          pricePerHour,
-          tagline,
-          token
-        )
-      );
+        dispatch(
+            updateUserRequest(
+                id,
+                user_id,
+                name,
+                picture,
+                type,
+                address,
+                token
+            )
+        );
     },
     updatePassword: (id, email, currentPass, newPass) => {
-      dispatch(updatePasswordRequest(id, email, currentPass, newPass));
+        dispatch(updatePasswordRequest(id, email, currentPass, newPass));
     }
   };
 };
@@ -543,4 +358,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AccountSettings);
+)(AccountStudent);

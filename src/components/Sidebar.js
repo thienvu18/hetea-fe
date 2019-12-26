@@ -1,6 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Route, useRouteMatch } from "react-router-dom";
 
+const SidebarLink = ({ label, icon, to, activeWhenExact }) => {
+  let match = useRouteMatch({
+    path: to,
+    exact: activeWhenExact
+  });
+
+  return (
+    <li className={match ? "active" : ""}>
+      <Link to={to}>
+        <i className={icon} />
+        {label}
+      </Link>
+    </li>
+  );
+};
 const Sidebar = () => {
   return (
     <div className="dashboard-sidebar">
@@ -20,30 +35,18 @@ const Sidebar = () => {
           <div className="dashboard-nav">
             <div className="dashboard-nav-inner">
               <ul data-submenu-title="Start">
-                <li className="active">
-                  <Link to="/dashboard">
-                    <i className="icon-material-outline-dashboard" />
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/dashboard-messages">
-                    <i className="icon-material-outline-question-answer" />
-                    Messages
-                    <span className="nav-tag">2</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/dashboard-bookmarks">
-                    <i className="icon-material-outline-star-border" />
-                    Bookmarks
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/dashboard-reviews">
-                    <i className="icon-material-outline-rate-review" /> Reviews
-                  </Link>
-                </li>
+                <SidebarLink
+                  label="Dashboard"
+                  to="/tutor/dashboard"
+                  icon="icon-material-outline-dashboard"
+                  activeWhenExact={true}
+                />
+                <SidebarLink
+                  label="Messages"
+                  to="/tutor/message"
+                  icon="icon-material-outline-question-answer"
+                  activeWhenExact={false}
+                />
               </ul>
 
               <ul data-submenu-title="Organize and Manage">
@@ -93,11 +96,14 @@ const Sidebar = () => {
               </ul>
 
               <ul data-submenu-title="Account">
-                <li>
-                  <Link to="/dashboard-settings">
-                    <i className="icon-material-outline-settings" /> Settings
-                  </Link>
-                </li>
+
+                <SidebarLink
+                    label="Settings"
+                    to="/tutor/account"
+                    icon="icon-material-outline-settings"
+                    activeWhenExact={false}
+                />
+
                 <li>
                   <Link to="/index-logged-out">
                     <i className="icon-material-outline-power-settings-new" />

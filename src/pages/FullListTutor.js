@@ -1,12 +1,17 @@
 import React from "react";
 import TutorCard from "../components/TutorCard";
-import {filterAction, getAllTutorsRequest} from "../actions/UserActions";
+import { filterAction, getAllTutorsRequest } from "../actions/UserActions";
 import { connect } from "react-redux";
 import RangeSlider from "../components/Slider";
 
 class FullListTutors extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      array: [],
+      currentPage: 1
+    };
+    this.handleClick = this.handleClick.bind(this);
     this.filters = {
       Location: "",
       HourRate: "",
@@ -15,10 +20,13 @@ class FullListTutors extends React.Component {
   }
 
   componentDidMount() {
-    const token = localStorage.getItem("user");
+    this.props.fetchTutors();
+  }
 
-    this.props.fetchTutors(token);
-
+  handleClick(event) {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
   }
 
   filter = () => {
@@ -26,9 +34,52 @@ class FullListTutors extends React.Component {
     return this.props.filters(this.filters);
   };
 
+  paginate = (array, page_size, page_number) => {
+    --page_number; // because pages logically start with 1, but technically with 0
+    return array.slice(page_number * page_size, (page_number + 1) * page_size);
+  };
+
   render() {
     const state = this.props;
     console.log(state.listTutors);
+
+    const { currentPage } = this.state;
+    const currentTodos = this.paginate(state.listTutors.all(), 2, currentPage);
+
+    console.log("currentTodos", currentTodos);
+
+    const renderTodos = currentTodos.map(p => {
+      return (
+        <TutorCard
+          key={p.number}
+          avatar={p.picture}
+          name={p.name}
+          job={p.tagline}
+          location={p.address}
+          rate={`$${p.pricePerHour} / hr`}
+          jobSuccess={"95%"}
+          linkProfile={`/tutors/${p.number}`}
+        />
+      );
+    });
+    let pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(state.listTutors.all().length / 2); i++) {
+      pageNumbers.push(i);
+    }
+
+    console.log("pageNumbers", pageNumbers);
+    const renderPageNumbers = pageNumbers.map(number => {
+      return (
+        <li
+          className="ripple-effect"
+          key={number}
+          id={number}
+          onClick={this.handleClick}
+        >
+          {number}
+        </li>
+      );
+    });
     return (
       <div>
         {/*// <!-- Spacer -->*/}
@@ -74,36 +125,6 @@ class FullListTutors extends React.Component {
                 <div className="sidebar-widget">
                   <h3>Skills</h3>
 
-                  {/*<div className="tags-container">*/}
-                  {/*  <div className="tag">*/}
-                  {/*    <input type="checkbox" id="tag1" />*/}
-                  {/*    <label htmlFor="tag1">front-end dev</label>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="tag">*/}
-                  {/*    <input type="checkbox" id="tag2" />*/}
-                  {/*    <label htmlFor="tag2">angular</label>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="tag">*/}
-                  {/*    <input type="checkbox" id="tag3" />*/}
-                  {/*    <label htmlFor="tag3">react</label>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="tag">*/}
-                  {/*    <input type="checkbox" id="tag4" />*/}
-                  {/*    <label htmlFor="tag4">vue js</label>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="tag">*/}
-                  {/*    <input type="checkbox" id="tag5" />*/}
-                  {/*    <label htmlFor="tag5">web apps</label>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="tag">*/}
-                  {/*    <input type="checkbox" id="tag6" />*/}
-                  {/*    <label htmlFor="tag6">design</label>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="tag">*/}
-                  {/*    <input type="checkbox" id="tag7" />*/}
-                  {/*    <label htmlFor="tag7">wordpress</label>*/}
-                  {/*  </div>*/}
-                  {/*</div>*/}
                   <div className="clearfix" />
 
                   {/*// <!-- More Skills -->*/}
@@ -153,61 +174,19 @@ class FullListTutors extends React.Component {
               {/*// <!-- Freelancers List Container -->*/}
               <div className="freelancers-container freelancers-list-layout margin-top-35">
                 {/*// <!--Tutor -->*/}
-                {state.listTutors.all().map(p => (
-                  <TutorCard
-                    key={p.number}
-                    avatar={p.picture}
-                    name={p.name}
-                    job={p.tagline}
-                    location={p.address}
-                    rate={`$${p.pricePerHour} / hr`}
-                    jobSuccess={"95%"}
-                    linkProfile={`/tutors/${p.number}`}
-                  />
-                ))}
+                {renderTodos}
+
                 {/*// <!--Tutor / End-->*/}
               </div>
               {/*// <!-- Tasks Container / End -->*/}
 
-              {/*// <!-- Pagination -->*/}
               <div className="clearfix" />
               <div className="row">
                 <div className="col-md-12">
                   {/*// <!-- Pagination -->*/}
                   <div className="pagination-container margin-top-40 margin-bottom-60">
                     <nav className="pagination">
-                      <ul>
-                        <li className="pagination-arrow">
-                          <a href="#" className="ripple-effect">
-                            <i className="icon-material-outline-keyboard-arrow-left" />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/#" className="ripple-effect">
-                            1
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/#" className="current-page ripple-effect">
-                            2
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/#" className="ripple-effect">
-                            3
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/#" className="ripple-effect">
-                            4
-                          </a>
-                        </li>
-                        <li className="pagination-arrow">
-                          <a href="#" className="ripple-effect">
-                            <i className="icon-material-outline-keyboard-arrow-right" />
-                          </a>
-                        </li>
-                      </ul>
+                      <ul>{renderPageNumbers}</ul>
                     </nav>
                   </div>
                 </div>
@@ -228,12 +207,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchTutors: token => {
-      dispatch(getAllTutorsRequest(token));
+    fetchTutors: () => {
+      dispatch(getAllTutorsRequest());
     },
-      filters: (filter)=>{
-        dispatch(filterAction(filter));
-      }
+    filters: filter => {
+      dispatch(filterAction(filter));
+    }
   };
 };
 

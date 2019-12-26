@@ -4,6 +4,7 @@ const initState = {
   currentUser: {
     id: "",
     idTutor: "",
+    idTutee:"",
     avatar: "",
     name: "",
     accountType: "",
@@ -14,6 +15,7 @@ const initState = {
     skills: [],
     pricePerHour: 0
   },
+
   listTutors: {
     tutors: [],
     all: function() {
@@ -27,15 +29,6 @@ const initState = {
   generate: []
 };
 const doFilter = (tutors, filters) => {
-  // if (filters.Location === "") {
-  //   return tutors.filter(tutor => {
-  //     return (
-  //       tutor.pricePerHour >= filters.HourRate[0] &&
-  //       tutor.pricePerHour <= filters.HourRate[1]
-  //     );
-  //   });
-  // }
-
   return tutors.filter(tutor => {
     return (
       tutor.address === filters.Location ||
@@ -44,7 +37,7 @@ const doFilter = (tutors, filters) => {
     );
   });
 };
-const mergeArrray = (users, tutors) => {
+const mergeArray = (users, tutors) => {
   let user = [];
   for (let i = 0; i < users.length; i = i + 1) {
     for (let j = 0; j < tutors.length; j = j + 1) {
@@ -64,27 +57,42 @@ const mergeArrray = (users, tutors) => {
       }
     }
   }
+
+
   return user;
 };
 const UserReducer = (state = initState, action) => {
   switch (action.type) {
-    case userConstants.GET_CURRENT_USER:
+    case userConstants.GET_CURRENT_USER: {
       const tmp = { ...state };
       try {
         console.log("get user");
         const user = action.payload.user.data;
-        const tutor = action.payload.tutor.data;
+
         tmp.currentUser.id = user.id;
         tmp.currentUser.avatar = user.picture;
         tmp.currentUser.name = user.name;
         tmp.currentUser.accountType = user.type;
         tmp.currentUser.email = user.email;
-        tmp.currentUser.address = tutor.address;
-        tmp.currentUser.bio = tutor.bio;
-        tmp.currentUser.tagLine = tutor.tagline;
-        tmp.currentUser.skills = tutor.skills.slice();
-        tmp.currentUser.pricePerHour = tutor.pricePerHour;
-        tmp.currentUser.idTutor = tutor.id;
+
+        console.log(tmp);
+
+        if (tmp.currentUser.accountType === "tutor") {
+          const tutor = action.payload.detail.data;
+          tmp.currentUser.address = tutor.address;
+          tmp.currentUser.bio = tutor.bio;
+          tmp.currentUser.tagLine = tutor.tagline;
+          tmp.currentUser.skills = tutor.skills.slice();
+          tmp.currentUser.pricePerHour = tutor.pricePerHour;
+          tmp.currentUser.idTutor = tutor.id;
+        }
+        if (tmp.currentUser.accountType === "tutee") {
+          const tutee = action.payload.detail.data;
+          tmp.currentUser.address = tutee.address;
+          tmp.currentUser.idTutee=tutee.id;
+        }
+
+
       } catch (e) {
         tmp.currentUser.id = "";
         tmp.currentUser.avatar = "";
@@ -97,7 +105,9 @@ const UserReducer = (state = initState, action) => {
         tmp.currentUser.skills = [];
         tmp.currentUser.pricePerHour = 0;
       }
+
       return tmp;
+    }
     case userConstants.GET_ALL: {
       console.log("get all tutors");
       try {
@@ -105,7 +115,7 @@ const UserReducer = (state = initState, action) => {
         const _listTutors = action.payload.tutors.data.rows;
 
         console.log("list", [_listUsers, _listTutors]);
-        const tutors = mergeArrray(_listUsers, _listTutors);
+        const tutors = mergeArray(_listUsers, _listTutors);
 
         state.generate = tutors;
 
@@ -125,6 +135,9 @@ const UserReducer = (state = initState, action) => {
       const tutors = doFilter(state.generate, action.payload.filters);
       const listTutors = { ...state.listTutors, tutors };
       return { ...state, listTutors };
+    }
+    case userConstants.CREATE_CONTRACT:{
+      return {...state}
     }
     default:
       return { ...state };
