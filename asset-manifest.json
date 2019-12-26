@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/hetea-fe/static/css/main.34de6062.chunk.css",
-    "main.js": "/hetea-fe/static/js/main.7a99b959.chunk.js",
-    "main.js.map": "/hetea-fe/static/js/main.7a99b959.chunk.js.map",
+    "main.js": "/hetea-fe/static/js/main.d9f7a462.chunk.js",
+    "main.js.map": "/hetea-fe/static/js/main.d9f7a462.chunk.js.map",
     "runtime-main.js": "/hetea-fe/static/js/runtime-main.f2f68442.js",
     "runtime-main.js.map": "/hetea-fe/static/js/runtime-main.f2f68442.js.map",
-    "static/js/2.b1858098.chunk.js": "/hetea-fe/static/js/2.b1858098.chunk.js",
-    "static/js/2.b1858098.chunk.js.map": "/hetea-fe/static/js/2.b1858098.chunk.js.map",
+    "static/js/2.87092e96.chunk.js": "/hetea-fe/static/js/2.87092e96.chunk.js",
+    "static/js/2.87092e96.chunk.js.map": "/hetea-fe/static/js/2.87092e96.chunk.js.map",
     "index.html": "/hetea-fe/index.html",
-    "precache-manifest.65e4a5f8dc60dec67ca2bf3787a8d616.js": "/hetea-fe/precache-manifest.65e4a5f8dc60dec67ca2bf3787a8d616.js",
+    "precache-manifest.2d1d8a1ba12f66050d54e8c9ebb649d3.js": "/hetea-fe/precache-manifest.2d1d8a1ba12f66050d54e8c9ebb649d3.js",
     "service-worker.js": "/hetea-fe/service-worker.js",
     "static/css/main.34de6062.chunk.css.map": "/hetea-fe/static/css/main.34de6062.chunk.css.map",
     "static/media/gb.svg": "/hetea-fe/static/media/gb.b518e6a9.svg",
@@ -17,8 +17,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.f2f68442.js",
-    "static/js/2.b1858098.chunk.js",
+    "static/js/2.87092e96.chunk.js",
     "static/css/main.34de6062.chunk.css",
-    "static/js/main.7a99b959.chunk.js"
+    "static/js/main.d9f7a462.chunk.js"
   ]
 }
