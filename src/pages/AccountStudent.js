@@ -6,9 +6,6 @@ import {
   updateUserRequest
 } from "../actions/UserActions";
 import { Redirect } from "react-router-dom";
-import RangeSlider from "../components/Slider";
-import SkillTag from "../components/SkillTag";
-import ContractForm from "../components/ContractForm";
 
 class AccountStudent extends React.Component {
   constructor(props) {
@@ -23,35 +20,36 @@ class AccountStudent extends React.Component {
 
   saveChanges = token => {
     const state = this.props;
-    const { skillsArray } = this.state;
 
     if (
       this.CurrentPassword === "" &&
       this.NewPassword === "" &&
       this.ConfirmPassword === ""
     ) {
-      state.updateUser(
-        state.idTutee,
-        state.id,
-        this.name,
-        state.avatar,
-        state.accountType,
-        this.address,
+      state.updateUser({
+        id: state.idTutee,
+        user_id: state.id,
+        name:this.name,
+        picture:state.avatar,
+        type: state.accountType,
+        address: this.address,
         token
+      }
       );
       return alert("Update information successful!");
     } else if (this.CurrentPassword === "")
       return alert("Please enter your password!");
     else if (this.NewPassword === this.ConfirmPassword) {
-      state.updateUser(
-        state.idTutee,
-        state.id,
-        this.name,
-        state.avatar,
-        state.accountType,
-        this.address,
+      state.updateUser({
+        id: state.idTutee,
+        user_id: state.id,
+        name:this.name,
+        picture:state.avatar,
+        type: state.accountType,
+        address: this.address,
         token
-      );
+      });
+
       state.updatePassword(
         state.id,
         state.email,
@@ -71,6 +69,7 @@ class AccountStudent extends React.Component {
     this.avatar = state.avatar;
     this.address = state.address;
 
+    console.log("state.idTutee",state.idTutee);
     const token = localStorage.getItem("user");
     if (!token && state.isLogin === false) {
       return <Redirect to="/" />;
@@ -277,19 +276,15 @@ class AccountStudent extends React.Component {
                 <button
                   className="button ripple-effect big margin-top-30"
                   onClick={() => {
-                    // console.log("mmmm", [
-                    //   state.idTutor,
-                    //   state.id,
-                    //   this.name,
-                    //   state.avatar,
-                    //   state.accountType,
-                    //   this.address,
-                    //   this.bio,
-                    //   skillsArray,
-                    //   this.hourlyRate,
-                    //   this.tagLine,
-                    //   token
-                    // ]);
+                    console.log("mmmm", [
+                      state.idTutee,
+                      state.id,
+                      this.name,
+                      state.avatar,
+                      state.accountType,
+                      this.address,
+                      token
+                    ]);
                     this.saveChanges(token);
                   }}
                 >
@@ -314,6 +309,7 @@ const mapStateToProps = state => {
   return {
     isLogin: state.AuthenticationReducer.isLogin,
     token: state.AuthenticationReducer.token,
+    idTutee: state.UserReducer.currentUser.idTutee,
     id: state.UserReducer.currentUser.id,
     avatar: state.UserReducer.currentUser.avatar,
     name: state.UserReducer.currentUser.name,
@@ -329,23 +325,23 @@ const mapDispatchToProps = dispatch => {
       dispatch(getCurrentUserRequest(token));
     },
     updateUser: (
-        id,
+        {id,
         user_id,
         name,
         picture,
         type,
         address,
-        token
+        token}
     ) => {
         dispatch(
             updateUserRequest(
-                id,
+                {id,
                 user_id,
                 name,
                 picture,
                 type,
                 address,
-                token
+                token}
             )
         );
     },

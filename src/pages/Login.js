@@ -32,6 +32,7 @@ class Login extends React.Component {
   render() {
     const state = this.props;
 
+    console.log(state);
     if (state.isLogin) {
       return <Redirect to="/" />;
     }

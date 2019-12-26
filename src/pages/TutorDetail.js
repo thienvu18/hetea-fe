@@ -52,7 +52,7 @@ class TutorDetail extends React.Component {
       tutor,
       tutee,
       this.hourInDay,
-      price,
+      price * this.hourInDay,
       startDate,
       endDate
     );
@@ -64,7 +64,23 @@ class TutorDetail extends React.Component {
     const tutor = state.listTutors.get(this.props.match.params.number);
     const token = localStorage.getItem("user");
     if (!tutor) {
-      return <div>Sorry, but the player was not found</div>;
+      return (
+        <div>
+          <div className="col-xl-12">
+            <section
+              id="not-found"
+              className="center margin-top-50 margin-bottom-25"
+            >
+              <h2>
+                404 <i className="icon-line-awesome-question-circle" />
+              </h2>
+              <p>
+                We're sorry, but the tutor you were looking for doesn't exist
+              </p>
+            </section>
+          </div>
+        </div>
+      );
     }
     return (
       <div>
@@ -254,6 +270,8 @@ class TutorDetail extends React.Component {
                   days={newValue => {
                     this.days = newValue;
                   }}
+                  type={state.accountType}
+                  isLogin={state.isLogin}
                   makeOffer={() =>
                     this.doCreateContract(
                       token,
@@ -369,6 +387,7 @@ const mapStateToProps = state => {
   return {
     listTutors: state.UserReducer.listTutors,
     isLogin: state.AuthenticationReducer.isLogin,
+    accountType:state.UserReducer.accountType,
     id: state.UserReducer.currentUser.id
   };
 };

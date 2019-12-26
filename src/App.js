@@ -12,7 +12,6 @@ import Register from "./pages/Register";
 import TutorDetail from "./pages/TutorDetail";
 import FullListTutors from "./pages/FullListTutor";
 import TutorHome from "./pages/TutorHome";
-import AccountSettings from "./pages/AccountTutor";
 import StudentHome from "./pages/StudentHome";
 
 function App() {
@@ -33,8 +32,8 @@ function App() {
             <PageNotFound />
           </Route>
         </Switch>
+        <Footer />
       </Router>
-      {/*<Footer />*/}
     </div>
   );
 }

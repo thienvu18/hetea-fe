@@ -38,24 +38,6 @@ const Message = () => {
             </div>
 
             <ul>
-              <li>
-                <a href="#">
-                  <div className="message-avatar">
-                    <Avatar src="../images/user-avatar-small-02.jpg" alt="David Peterson" />
-                      <i className="status-icon status-online" />
-                  </div>
-
-                  <div className="message-by">
-                    <div className="message-by-headline">
-                      <h5>David Peterson</h5>
-                      <span>4 hours ago</span>
-                    </div>
-                    <p>
-                      Thanks for reaching out. I'm quite busy right now on many
-                    </p>
-                  </div>
-                </a>
-              </li>
 
               <li className="active-message">
                 <a href="#">
@@ -69,46 +51,6 @@ const Message = () => {
                       <h5>Sindy Forest</h5>
                       <span>Yesterday</span>
                     </div>
-                    <p>
-                      Hi Tom! Hate to break it to you but I'm actually on
-                      vacation
-                    </p>
-                  </div>
-                </a>
-              </li>
-
-              <li>
-                <a href="#">
-                  <div className="message-avatar">
-                    <i className="status-icon status-offline" />
-                    <Avatar src="../images/user-avatar-placeholder.png" alt="" />
-                  </div>
-
-                  <div className="message-by">
-                    <div className="message-by-headline">
-                      <h5>Sebastiano Piccio</h5>
-                      <span>2 days ago</span>
-                    </div>
-                    <p>
-                      Hello, I want to talk about my project if you don't mind!
-                    </p>
-                  </div>
-                </a>
-              </li>
-
-              <li>
-                <a href="#">
-                  <div className="message-avatar">
-                    <i className="status-icon status-online" />
-                    <Avatar src="../images/user-avatar-placeholder.png" alt="" />
-                  </div>
-
-                  <div className="message-by">
-                    <div className="message-by-headline">
-                      <h5>Marcin Kowalski</h5>
-                      <span>2 days ago</span>
-                    </div>
-                    <p>Yes, I received payment. Thanks for cooperation!</p>
                   </div>
                 </a>
               </li>

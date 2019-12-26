@@ -50,49 +50,12 @@ const Sidebar = () => {
               </ul>
 
               <ul data-submenu-title="Organize and Manage">
-                <li>
-                  <a href="/">
-                    <i className="icon-material-outline-business-center" /> Jobs
-                  </a>
-                  <ul>
-                    <li>
-                      <Link to="/dashboard-manage-jobs">
-                        Manage Jobs <span className="nav-tag">3</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-manage-candidates">
-                        Manage Candidates
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-post-a-job">Post a Job</Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="/">
-                    <i className="icon-material-outline-assignment" /> Tasks
-                  </a>
-                  <ul>
-                    <li>
-                      <Link to="/dashboard-manage-tasks">
-                        Manage Tasks <span className="nav-tag">2</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-manage-bidders">Manage Bidders</Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-my-active-bids">
-                        My Active Bids <span className="nav-tag">4</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-post-a-task">Post a Task</Link>
-                    </li>
-                  </ul>
-                </li>
+                <SidebarLink
+                    label="Manage Tasks"
+                    to="/tutor/tasks"
+                    icon="icon-material-outline-assignment"
+                    activeWhenExact={false}
+                />
               </ul>
 
               <ul data-submenu-title="Account">

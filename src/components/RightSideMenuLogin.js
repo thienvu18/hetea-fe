@@ -64,7 +64,7 @@ const RightSideMenuLogin = props => {
                       role === "tutor" ? "/tutor/dashboard" : "/student/account"
                     }
                   >
-                    <i className="icon-material-outline-settings" /> Settings
+                    <i className="icon-material-outline-settings" /> Dashboard
                   </Link>
                 </li>
                 <li>

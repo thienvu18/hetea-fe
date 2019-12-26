@@ -70,13 +70,18 @@ class FullListTutors extends React.Component {
     console.log("pageNumbers", pageNumbers);
     const renderPageNumbers = pageNumbers.map(number => {
       return (
-        <li
-          className="ripple-effect"
-          key={number}
-          id={number}
-          onClick={this.handleClick}
-        >
-          {number}
+        <li className="ripple-effect" key={number}>
+          <a
+            id={number}
+            onClick={this.handleClick}
+            className={
+              number === currentPage
+                ? "ripple-effect current-page"
+                : "ripple-effect"
+            }
+          >
+            {number}
+          </a>
         </li>
       );
     });

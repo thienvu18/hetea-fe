@@ -10,7 +10,6 @@ import {getCurrentUserRequest} from "../actions/UserActions";
 class Header extends React.Component {
 
   componentDidMount() {
-    console.log("abc");
     if(this.props.isLogin){
       const token = localStorage.getItem("user");
       this.props.fetchCurrentUser(token);

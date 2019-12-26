@@ -1,11 +1,17 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
-import { Route } from "react-router-dom";
+import { Route,Redirect } from "react-router-dom";
 import Message from "./Message";
 import AccountSettings from "./AccountTutor";
+import ManageTask from "./ManageTask";
 
 export default class TutorHome extends React.Component {
   render() {
+      const token=localStorage.getItem("user");
+      if(!token)
+      {
+          return <Redirect to="/"/>
+      }
     return (
       <div className="dashboard-container">
         <Sidebar />
@@ -14,6 +20,7 @@ export default class TutorHome extends React.Component {
             {/*<!-- Dashboard Headline -->*/}
             <Route path="/tutor/message" component={Message}/>
             <Route path="/tutor/account" component={AccountSettings}/>
+              <Route path="/tutor/tasks" component={ManageTask}/>
 
             {/*<!-- Footer -->*/}
             <div class="dashboard-footer-spacer" />

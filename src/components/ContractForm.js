@@ -116,7 +116,7 @@ const useStyles = makeStyles({
 });
 const ContractForm = props => {
   const classes = useStyles();
-  const { hourInDay, name, days, makeOffer } = props;
+  const { hourInDay, name, days, makeOffer ,type,isLogin} = props;
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {

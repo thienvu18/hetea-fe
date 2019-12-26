@@ -28,23 +28,18 @@ function getCurrentTutor(user_id, token) {
   });
   return tutor;
 }
-
-function getCurrentTutee(user_id, token) {
+function getCurrentTutee(token) {
   const tutee = axios({
     method: "GET",
     url: "https://hetea.herokuapp.com/tutees/me",
     headers: {
       Authorization: `Bearer ${token}`
     },
-    data: {
-      user_id: user_id
-    }
   }).catch(err => {
     return err;
   });
   return tutee;
 }
-
 export const getCurrentUserAction = (user, detail) => {
   return {
     type: userConstants.GET_CURRENT_USER,
@@ -54,25 +49,28 @@ export const getCurrentUserAction = (user, detail) => {
     }
   };
 };
-
 export const getCurrentUserRequest = token => {
   return dispatch => {
     return getCurrentUser(token).then(user => {
-      console.log("user", user);
-      try {
+      console.log("get current user", user);
+      try{
         if (user.data.type === "tutor") {
           getCurrentTutor(user.data.id, token).then(tutor => {
             console.log("tutor", tutor);
             dispatch(getCurrentUserAction(user, tutor));
           });
         }
-        // if (user.data.type === "tutee") {
-        //   getCurrentTutee(user.data.id, token).then(tutee => {
-        //     console.log("tutee", tutee);
-        //     dispatch(getCurrentUserAction(user, tutee));
-        //   });
-        // }
-      } catch (e) {}
+
+        if (user.data.type === "tutee") {
+          getCurrentTutee(token).then(tutee => {
+            console.log("tutee", tutee);
+            dispatch(getCurrentUserAction(user, tutee));
+          });
+        }
+
+      }catch (e) {
+        
+      }
 
       dispatch(getCurrentUserAction(user));
     });
@@ -147,7 +145,6 @@ export const updatePasswordAction = res => {
     }
   };
 };
-
 export const updatePasswordRequest = (
   id,
   email,
@@ -201,13 +198,15 @@ const updateTutor = (
   });
   return res;
 };
-
-const updateTutee = (id, user_id, address) => {
+const updateTutee = (id, user_id, address,token) => {
   const res = axios({
     method: "PUT",
     url: `https://hetea.herokuapp.com/tutees/${id}`,
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+
     data: {
-      access_token: "x2eejgTfSBPP0aRqsFQreyPw8SNGWFUL",
       user_id: user_id,
       address: address
     }
@@ -216,7 +215,6 @@ const updateTutee = (id, user_id, address) => {
   });
   return res;
 };
-
 export const updateUserAction = res => {
   return {
     type: userConstants.UPDATE_USER,
@@ -225,9 +223,8 @@ export const updateUserAction = res => {
     }
   };
 };
-
 export const updateUserRequest = (
-  id,
+    {id,
   user_id,
   name,
   picture,
@@ -237,11 +234,12 @@ export const updateUserRequest = (
   skills,
   pricePerHour,
   tagLine,
-  token
+  token}
 ) => {
   return dispatch => {
     return updateUser(user_id, name, picture, token).then(user => {
       console.log("update user", user);
+      console.log(type);
       if (type === "tutor") {
         updateTutor(
           id,
@@ -257,7 +255,10 @@ export const updateUserRequest = (
         });
       }
       if (type === "tutee") {
-        updateTutee(id, user_id, address).then(tutee => {
+        console.log(id, user_id, address, token);
+        updateTutee(id, user_id, address, token).then(tutee => {
+
+
           console.log("update tutee", tutee);
           dispatch(updateUserAction(user));
         });
@@ -283,7 +284,6 @@ export const createContractAction = res => {
     }
   };
 };
-
 const createContract = (
   token,
   tutor,
@@ -336,3 +336,85 @@ export const createContractRequest = (
     });
   };
 };
+
+function getUser(user_id) {
+  const user = axios({
+    method: "GET",
+    url: `https://hetea.herokuapp.com/users/${user_id}`,
+
+  }).catch(err => {
+    return err;
+  });
+  return user;
+
+}
+
+function getAllContracts(token) {
+  const contracts = axios({
+    method: "GET",
+    url: "https://hetea.herokuapp.com/contracts",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).catch(err => {
+    return err;
+  });
+  return contracts;
+
+}
+export const getAllContractsAction = (res) => {
+  return {
+    type: userConstants.GET_ALL_CONTRACT,
+    payload: {
+      res
+    }
+  };
+};
+
+export const getAllContractsRequest = (token) => {
+  return dispatch => {
+    return getAllContracts(token).then(async res => {
+      let tmp=res.data.rows;
+      console.log("tmp",tmp)
+      for(let i=0;i<res.data.count;i+=1){
+      const tutee = await  getUser(tmp[i].tutee);
+        console.log("res",tutee);
+        tmp[i].tuteeName=tutee.data.name;
+        tmp[i].tuteeAvatar= tutee.data.picture;
+
+      }
+      dispatch(getAllContractsAction(tmp));
+    })}
+  };
+
+function OnclickUpdateContract(data, token) {
+  const res = axios
+      .put(
+          `https://hetea.herokuapp.com/contracts/status/${data.id}`,
+          {
+            access_token: token,
+            status: data.status
+          }
+      )
+      .catch(error => {
+        return error;
+      });
+  return res;
+}
+
+export const UpdateContract = (data, token, res) => {
+  return {
+    type: userConstants.updateContract,
+    data: { token, res }
+  };
+};
+
+export const UpdateContractRequest = (data, token) => {
+  return dispatch => {
+    return OnclickUpdateContract(data, token).then(res => {
+      console.log("update status",res);
+      dispatch(UpdateContract(data, token, res));
+    });
+  };
+}
+

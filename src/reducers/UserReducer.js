@@ -4,7 +4,7 @@ const initState = {
   currentUser: {
     id: "",
     idTutor: "",
-    idTutee:"",
+    idTutee: "",
     avatar: "",
     name: "",
     accountType: "",
@@ -16,6 +16,12 @@ const initState = {
     pricePerHour: 0
   },
 
+  listContracts: {
+    contracts: [],
+    all: function() {
+      return this.contracts;
+    }
+  },
   listTutors: {
     tutors: [],
     all: function() {
@@ -58,7 +64,6 @@ const mergeArray = (users, tutors) => {
     }
   }
 
-
   return user;
 };
 const UserReducer = (state = initState, action) => {
@@ -67,15 +72,14 @@ const UserReducer = (state = initState, action) => {
       const tmp = { ...state };
       try {
         console.log("get user");
-        const user = action.payload.user.data;
-
-        tmp.currentUser.id = user.id;
-        tmp.currentUser.avatar = user.picture;
-        tmp.currentUser.name = user.name;
-        tmp.currentUser.accountType = user.type;
-        tmp.currentUser.email = user.email;
-
-        console.log(tmp);
+        const user = { ...action.payload.user.data };
+        const currentUser = {};
+        currentUser.id = user.id;
+        currentUser.avatar = user.picture;
+        currentUser.name = user.name;
+        currentUser.accountType = user.type;
+        currentUser.email = user.email;
+        tmp.currentUser = { ...currentUser };
 
         if (tmp.currentUser.accountType === "tutor") {
           const tutor = action.payload.detail.data;
@@ -89,11 +93,10 @@ const UserReducer = (state = initState, action) => {
         if (tmp.currentUser.accountType === "tutee") {
           const tutee = action.payload.detail.data;
           tmp.currentUser.address = tutee.address;
-          tmp.currentUser.idTutee=tutee.id;
+          tmp.currentUser.idTutee = tutee.id;
         }
-
-
       } catch (e) {
+        console.log(e);
         tmp.currentUser.id = "";
         tmp.currentUser.avatar = "";
         tmp.currentUser.name = "";
@@ -136,8 +139,17 @@ const UserReducer = (state = initState, action) => {
       const listTutors = { ...state.listTutors, tutors };
       return { ...state, listTutors };
     }
-    case userConstants.CREATE_CONTRACT:{
-      return {...state}
+    case userConstants.CREATE_CONTRACT: {
+      return { ...state };
+    }
+    case userConstants.GET_ALL_CONTRACT: {
+      const contracts = action.payload.res;
+
+      const listContracts = { ...state.listContracts, contracts };
+      return { ...state, listContracts };
+    }
+    case userConstants.updateContract:{
+      return {...state};
     }
     default:
       return { ...state };

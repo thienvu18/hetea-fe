@@ -505,7 +505,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(getCurrentUserRequest(token));
     },
     updateUser: (
-      id,
+        {id,
       user_id,
       name,
       picture,
@@ -515,11 +515,11 @@ const mapDispatchToProps = dispatch => {
       skills,
       pricePerHour,
       tagline,
-      token
+      token}
     ) => {
       dispatch(
         updateUserRequest(
-          id,
+            {id,
           user_id,
           name,
           picture,
@@ -529,7 +529,7 @@ const mapDispatchToProps = dispatch => {
           skills,
           pricePerHour,
           tagline,
-          token
+          token}
         )
       );
     },

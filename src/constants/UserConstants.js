@@ -10,6 +10,8 @@ const userConstants = {
   FILTER: "FILTER",
   FORGOT_PASSWORD: "FORGOT_PASSWORD",
   CREATE_CONTRACT:"CREATE_CONTRACT",
+  GET_ALL_CONTRACT:"GET_ALL_CONTRACT",
+  updateContract: "UPDATE_CONTRACT",
 };
 
 export default userConstants;
